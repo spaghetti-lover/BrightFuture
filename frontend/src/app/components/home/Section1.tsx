@@ -1,3 +1,6 @@
+import Button from "../button/ Button";
+import LinkButton from "../link_button/Link";
+
 const Section1 = () => {
   return (
     <>
@@ -9,17 +12,13 @@ const Section1 = () => {
             placeholder="Enter your address"
             className="h-[40px] w-[400px] outline-none pl-[15px]"
           />
-          <button className="px-[15px] py-[10px] text-white font-bold bg-primary-orange">
-            CHECK MY ROOF
-          </button>
+          <Button title="Check my roof" />
         </form>
         <p className="mb-[30px] w-[400px] text-center">
           Search for your home. Discover your solar savings potential. See what
           is possible with solar in your Vietnam community.
         </p>
-        <div className="text-blue-600">
-          <a href="/">Explore your are</a>
-        </div>
+        <LinkButton text="Explore your area" color="text-blue-600" />
       </div>
     </>
   );

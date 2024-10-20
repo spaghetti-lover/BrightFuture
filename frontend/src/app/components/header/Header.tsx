@@ -29,9 +29,9 @@ const Header = () => {
       <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between py-[30px] border-b-2 border-orange-500 z-auto bg-white">
         <div className="flex items-center">
           <FiAlignJustify className=" mr-[15px] text-[24px] text-title-grey" />
-          <h3 className="text-[24px] text-title-grey font-medium">
+          <a href="/" className="text-[24px] text-title-grey font-medium">
             Bright Future
-          </h3>
+          </a>
         </div>
         <nav>
           <ul className="flex items-center">

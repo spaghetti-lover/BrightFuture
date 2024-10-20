@@ -24,7 +24,7 @@ const Footer = () => {
   ];
   return (
     <>
-      <div className="h-[60px] fixed bottom-0 left-0 right-0 mx-auto flex  items-center py-[30px] border-t-2 border-orange-500 z-50 bg-white">
+      <div className="h-[60px] fixed bottom-0 left-0 right-0 mx-auto flex  items-center py-[30px] border-t-2 border-orange-500 z-50 bg-[#f5f5f5]">
         <div className="text-[18px] mr-[200px] text-title-grey font-bold">
           Bright Future
         </div>

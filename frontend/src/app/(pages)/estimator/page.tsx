@@ -1,7 +1,10 @@
+import Section1 from "@/app/components/estimator/Section1";
+import Section2 from "@/app/components/estimator/Section2";
 const Estimators = () => {
   return (
     <>
-      <div>Estimators</div>
+      <Section1 />
+      <Section2 />
     </>
   );
 };
