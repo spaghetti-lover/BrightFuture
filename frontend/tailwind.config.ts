@@ -7,11 +7,20 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "576px",
+      md: "768px",
+      lg: "992px",
+      xl: "1280px",
+      "2xl": "1280px",
+    },
     extend: {
+      backgroundImage: {},
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        greytext: "#757575",
+        "title-grey": "#757575",
+        "primary-orange": "#EF5600",
+        "dark-grey": "#9E9E9E",
+        "text-grey": "#616161",
       },
     },
   },
