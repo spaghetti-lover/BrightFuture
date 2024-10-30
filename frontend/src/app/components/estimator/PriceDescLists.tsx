@@ -9,7 +9,7 @@ const PriceDescLists = ({
   return (
     <div className="grid grid-cols-3 gap-3">
       {MenuPrices.map((item, index) => (
-        <PriceDesc price={item.price} desc={item.desc} />
+        <PriceDesc key={index} price={item.price} desc={item.desc} />
       ))}
     </div>
   );

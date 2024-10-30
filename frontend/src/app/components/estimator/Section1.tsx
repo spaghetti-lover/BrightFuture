@@ -1,5 +1,5 @@
 import React from "react";
-import { Sun, Maximize } from "lucide-react";
+import { Maximize } from "lucide-react";
 import Image from "next/image";
 const Section1 = () => {
   return (

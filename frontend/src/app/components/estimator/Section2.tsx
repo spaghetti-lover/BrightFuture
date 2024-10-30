@@ -95,7 +95,7 @@ const Section2 = () => {
           <div className="flex gap-8 mb-[25px]">
             {/* Carbon Dioxide Section */}
             {MenuInfo.map((item, index) => (
-              <div className="flex items-center">
+              <div key={index} className="flex items-center">
                 <div className="flex items-center">
                   <img
                     src={item.image}

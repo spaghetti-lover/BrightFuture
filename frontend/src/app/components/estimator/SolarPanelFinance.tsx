@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import PriceDesc from "./PriceDesc";
 import PriceDescLists from "./PriceDescLists";
 
 const SolarPanelFinance = () => {
