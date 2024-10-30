@@ -1,5 +1,5 @@
 import Image from "next/image";
-import LinkButton from "../link_button/Link";
+import LinkButton from "../link_button/LinkButton";
 const Section4 = () => {
   return (
     <div className="flex flex-col items-center py-[40px]">

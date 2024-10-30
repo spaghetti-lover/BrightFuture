@@ -21,6 +21,8 @@ const config: Config = {
         "primary-orange": "#EF5600",
         "dark-grey": "#9E9E9E",
         "text-grey": "#616161",
+        "background-grey": "#fafafa",
+        "primary-purple": "#755692",
       },
     },
   },

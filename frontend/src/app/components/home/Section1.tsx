@@ -1,5 +1,5 @@
 import Button from "../button/ Button";
-import LinkButton from "../link_button/Link";
+import LinkButton from "../link_button/LinkButton";
 
 const Section1 = () => {
   return (

@@ -26,17 +26,23 @@ const Header = () => {
   ];
   return (
     <>
-      <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between py-[30px] border-b-2 border-orange-500 z-auto bg-white">
-        <div className="flex items-center">
-          <FiAlignJustify className=" mr-[15px] text-[24px] text-title-grey" />
-          <a href="/" className="text-[24px] text-title-grey font-medium">
+      <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between border-b-2 border-orange-500 z-auto bg-white">
+        <div className="flex items-center content-center h-full">
+          <FiAlignJustify className="h-full hover:bg-gray-950 mr-[15px] text-[24px] text-title-grey" />
+          <a
+            href="/"
+            className="h-full hover:bg-gray-950 text-[24px] text-title-grey font-medium"
+          >
             Bright Future
           </a>
         </div>
-        <nav>
-          <ul className="flex items-center">
+        <nav className="h-full">
+          <ul className="flex items-center h-full">
             {MenuLinks.map((item, index) => (
-              <li key={index} className="mx-[10px] text-text-grey text-[15px]">
+              <li
+                key={index}
+                className="px-[10px] h-full text-text-grey hover:bg-gray-950 text-[15px]"
+              >
                 <Link className="" href={item.url}>
                   <span>{item.title}</span>
                 </Link>

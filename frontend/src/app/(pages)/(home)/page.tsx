@@ -1,3 +1,4 @@
+"use client";
 import Section1 from "@/app/components/home/Section1";
 import Section2 from "@/app/components/home/Section2";
 import Section3 from "@/app/components/home/Section3";
