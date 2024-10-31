@@ -30,6 +30,8 @@ class CO2Service:
             "co2_from_kwh": co2_metric_tons,
             "equivalent_trees": trees,
             "equivalent_cars": cars,
+            "equivalent_phones": phones,
+
             "messages": {
                 "co2_message": f"{co2_metric_tons} metric tons of CO2",
                 "trees_message": f"{trees} urban tree seedlings grown for 10 years",

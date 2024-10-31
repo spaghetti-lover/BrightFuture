@@ -1,0 +1,15 @@
+[33m5eb7814[m[33m ([m[1;36mHEAD[m[33m)[m HEAD@{0}: reset: moving to 5eb7814bc836b810984ba1e48a1a9a0e2cdb9ddc
+[33m47da18f[m[33m ([m[1;32mmain[m[33m, [m[1;32manh-be[m[33m)[m HEAD@{1}: checkout: moving from anh-be to 47da18f
+[33m47da18f[m[33m ([m[1;32mmain[m[33m, [m[1;32manh-be[m[33m)[m HEAD@{2}: checkout: moving from 47da18fbf5f6fe3e47509b705a1985cc279918bd to anh-be
+[33m47da18f[m[33m ([m[1;32mmain[m[33m, [m[1;32manh-be[m[33m)[m HEAD@{3}: checkout: moving from main to 47da18f
+[33m47da18f[m[33m ([m[1;32mmain[m[33m, [m[1;32manh-be[m[33m)[m HEAD@{4}: reset: moving to 47da18f
+[33md82613d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: rebase (skip) (finish): returning to refs/heads/main
+[33md82613d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{6}: pull origin main --rebase (pick): environmental impact
+[33m6d52f2d[m HEAD@{7}: pull origin main --rebase (start): checkout 6d52f2dbe2c928fede9a59dcbcb1586e35879119
+[33m5a9de90[m HEAD@{8}: rebase (abort): updating HEAD
+[33m6ce8a54[m HEAD@{9}: commit: enviromental impact
+[33m8345658[m HEAD@{10}: pull origin main --rebase (pick): environmental impact
+[33m6d52f2d[m HEAD@{11}: pull origin main --rebase (start): checkout 6d52f2dbe2c928fede9a59dcbcb1586e35879119
+[33m5a9de90[m HEAD@{12}: commit: environmental impact
+[33m47da18f[m[33m ([m[1;32mmain[m[33m, [m[1;32manh-be[m[33m)[m HEAD@{13}: commit: environmental impact
+[33mee2e778[m HEAD@{14}: clone: from https://github.com/spaghetti-lover/BrightFuture.git
