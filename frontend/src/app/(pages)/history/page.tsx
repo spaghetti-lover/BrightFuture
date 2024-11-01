@@ -59,14 +59,14 @@ const History = () => {
     },
   ]);
 
-  const [expandedId, setExpandedId] = useState(null);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filterType, setFilterType] = useState("date"); // 'date', 'location'
 
-  const toggleExpand = (id) => {
+  const toggleExpand = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  const handleDownload = (id, format) => {
+  const handleDownload = (id: number, format: string) => {
     // Simulate download - in real app, this would trigger actual file download
     console.log(`Downloading prediction ${id} in ${format} format`);
   };
