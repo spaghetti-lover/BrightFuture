@@ -3,24 +3,24 @@ import { FiAlignJustify } from "react-icons/fi";
 const Header = () => {
   const MenuLinks = [
     {
-      title: "Estimator",
+      title: "Dự đoán",
       url: "/estimator",
     },
 
     {
-      title: "Consulting",
+      title: "Tư vấn lắp đặt",
       url: "/consulting",
     },
     {
-      title: "History",
+      title: "Lịch sử",
       url: "/history",
     },
     {
-      title: "FAQ",
+      title: "Liên hệ",
       url: "/faq",
     },
     {
-      title: "About",
+      title: "Giới thiệu",
       url: "/about",
     },
   ];

@@ -4,20 +4,20 @@ const Section2 = () => {
     {
       image: "/images/2b-how-works.png",
       number: 1,
-      title: "Search for your home",
-      desc: "We use Google Earth imagery to analyze your roof shape and local weather patterns to create a personalized solar plan. ",
+      title: "Dự đoán sản lượng năng lượng mặt trời",
+      desc: "Sử dụng dữ liệu từ các tấm pin, dữ liệu về thời tiết và dữ liệu về địa lý để dự đoán sản lượng năng lượng mặt trời cho từng mái nhà, khu vực",
     },
     {
       image: "/images/volt_and_panels@2X.png",
       number: 2,
-      title: "Personalize your solar analysis",
-      desc: "Adjust your electric bill to fine-tune your savings estimate and the recommended number of solar panels for your home. ",
+      title: "Tư vấn lắp đặt hiệu quả",
+      desc: "Tính toán chi phí lắp đặt, tiết kiệm năng lượng và giảm lượng khí thải CO2, đồng thời cung cấp thông tin về các chương trình khuyến mãi và hỗ trợ tài chính",
     },
     {
       image: "/images/savings@2X.png",
       number: 3,
-      title: "Compare finance options",
-      desc: "Compare loan, lease, and purchase options for your solar panels based on your results.",
+      title: "Theo dõi & phân tích dữ liệu lịch sử",
+      desc: "Theo dõi sản lượng năng lượng mặt trời, tiết kiệm năng lượng và giảm lượng khí thải CO2 theo thời gian",
     },
   ];
   return (

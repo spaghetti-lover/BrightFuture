@@ -12,11 +12,10 @@ const Section1 = () => {
             placeholder="Enter your address"
             className="h-[40px] w-[400px] outline-none pl-[15px]"
           />
-          <Button title="Check my roof" />
+          <Button title="Tư vấn ngay" />
         </form>
         <p className="mb-[30px] w-[400px] text-center">
-          Search for your home. Discover your solar savings potential. See what
-          is possible with solar in your Vietnam community.
+          Giải pháp dự đoán và tối ưu năng lượng mặt trời cho mọi đối tượng
         </p>
         <LinkButton text="Explore your area" color="text-blue-600" />
       </div>
