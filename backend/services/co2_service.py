@@ -11,7 +11,7 @@ class CO2Service:
         - Calculates equivalent number of phones charged
         """
         # Calculate CO2 from kWh
-        co2_per_kwh = 4.17 * 10**-4
+        co2_per_kwh = 0.6766 * 10**-3
         co2_metric_tons = round(kwh * co2_per_kwh, 4)
         
         # Calculate equivalent trees

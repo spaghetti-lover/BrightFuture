@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from typing import Union
-import os,sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from services import co2_service
 from schemas import CO2Response
 
