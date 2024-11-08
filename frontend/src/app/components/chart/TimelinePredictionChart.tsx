@@ -24,8 +24,8 @@ const TimelinePredictionChart = () => {
     savings: Math.round(800 + Math.sin(i / 2) * 200),
   }));
 
-  const weeklyData = Array.from({ length: 12 }, (_, i) => ({
-    time: `Week ${i + 1}`,
+  const yearlyData = Array.from({ length: 12 }, (_, i) => ({
+    time: `year ${i + 1}`,
     savings: Math.round(3000 + Math.cos(i / 4) * 500),
   }));
 
@@ -43,8 +43,8 @@ const TimelinePredictionChart = () => {
       case "daily":
         setData(dailyData);
         break;
-      case "weekly":
-        setData(weeklyData);
+      case "yearly":
+        setData(yearlyData);
         break;
     }
   };
@@ -53,9 +53,7 @@ const TimelinePredictionChart = () => {
     <Card className="w-full max-w-4xl bg-white shadow-lg">
       <CardHeader>
         <div className="flex justify-between items-center">
-          <CardTitle className="text-xl text-purple-800">
-            Energy Savings Prediction
-          </CardTitle>
+          <CardTitle className="text-xl text-purple-800"></CardTitle>
           <div className="flex gap-2">
             <Button
               variant={timeframe === "hourly" ? "default" : "outline"}
@@ -72,11 +70,11 @@ const TimelinePredictionChart = () => {
               Daily
             </Button>
             <Button
-              variant={timeframe === "weekly" ? "default" : "outline"}
-              onClick={() => handleTimeframeChange("weekly")}
+              variant={timeframe === "yearly" ? "default" : "outline"}
+              onClick={() => handleTimeframeChange("yearly")}
               className="text-sm"
             >
-              Weekly
+              Yearly
             </Button>
           </div>
         </div>

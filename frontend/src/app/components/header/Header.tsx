@@ -26,7 +26,7 @@ const Header = () => {
   ];
   return (
     <>
-      <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between border-b-2 border-orange-500 z-auto bg-white">
+      <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between border-b-2 border-orange-500 bg-white z-[9999]">
         <div className="flex items-center content-center h-full">
           <FiAlignJustify className="h-full mr-[15px] text-[24px] text-title-grey" />
           <a

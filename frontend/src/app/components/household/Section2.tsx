@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import LinkButton from "../link_button/LinkButton";
+import LinkButton from "../button/LinkButton";
 import SolarPanelFinance from "./SolarPanelFinance";
 import Heading from "../heading/Heading";
 

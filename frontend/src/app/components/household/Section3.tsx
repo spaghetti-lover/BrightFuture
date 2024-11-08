@@ -1,6 +1,6 @@
 import React from "react";
 import { Mail, Facebook, Twitter } from "lucide-react";
-import LinkButton from "../link_button/LinkButton";
+import LinkButton from "../button/LinkButton";
 
 const Section3 = () => {
   return (

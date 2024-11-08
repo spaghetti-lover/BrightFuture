@@ -1,13 +1,15 @@
 import TimelinePredictionChart from "@/app/components/chart/TimelinePredictionChart";
-import Section1 from "@/app/components/household/SolarAnalysis";
+import SolarAnalysis from "@/app/components/household/SolarAnalysis";
+import SolarPanelFinance from "@/app/components/household/SolarPanelFinance";
 import SolarDataTable from "@/app/components/table/SolarDataTable";
-const Business = () => {
+
+const ResultPage = () => {
   return (
     <>
-      <Section1 />
+      <SolarAnalysis />
       <TimelinePredictionChart />
       <SolarDataTable />
     </>
   );
 };
-export default Business;
+export default ResultPage;

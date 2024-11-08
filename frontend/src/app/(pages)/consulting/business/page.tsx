@@ -1,4 +1,4 @@
-import Section1 from "@/app/components/household/Section1";
+import Section1 from "@/app/components/household/SolarAnalysis";
 import Section2 from "@/app/components/household/Section2";
 import Section3 from "@/app/components/household/Section3";
 

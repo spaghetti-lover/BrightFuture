@@ -22,7 +22,7 @@ const generateData = () => {
 
   return times.map((time) => ({
     time,
-    solarRadiation: Math.round(Math.random() * 800 + 200),
+    solarIrradiation: Math.round(Math.random() * 800 + 200),
     predictedOutput: Math.round(Math.random() * 50 + 10),
     efficiency: Math.round((Math.random() * 20 + 80) * 10) / 10,
   }));
@@ -74,14 +74,67 @@ export default function SolarDataTable() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const hourlyData = Array.from({ length: 24 }, (_, i) => ({
+    time: `${i}:00`,
+    savings: Math.round(150 + Math.sin(i / 3) * 50),
+  }));
+  const dailyData = Array.from({ length: 7 }, (_, i) => ({
+    time: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][i],
+    savings: Math.round(800 + Math.sin(i / 2) * 200),
+  }));
+  const yearlyData = Array.from({ length: 12 }, (_, i) => ({
+    time: `year ${i + 1}`,
+    savings: Math.round(3000 + Math.cos(i / 4) * 500),
+  }));
+  const [timeframe, setTimeframe] = useState("daily");
+  const [daydata, setDayData] = useState(dailyData);
+  const handleTimeframeChange = (
+    newTimeframe: React.SetStateAction<string>
+  ) => {
+    setTimeframe(newTimeframe);
+    switch (newTimeframe) {
+      case "hourly":
+        setDayData(hourlyData);
+        break;
+      case "daily":
+        setDayData(dailyData);
+        break;
+      case "yearly":
+        setDayData(yearlyData);
+        break;
+    }
+  };
 
   return (
     <Card className="w-full max-w-4xl">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl text-purple-800">
-            Hourly Solar Performance Data
+            Solar Irradiation Data
           </CardTitle>
+          <div className="flex gap-2">
+            <Button
+              variant={timeframe === "hourly" ? "default" : "outline"}
+              onClick={() => handleTimeframeChange("hourly")}
+              className="text-sm"
+            >
+              Hourly
+            </Button>
+            <Button
+              variant={timeframe === "daily" ? "default" : "outline"}
+              onClick={() => handleTimeframeChange("daily")}
+              className="text-sm"
+            >
+              Daily
+            </Button>
+            <Button
+              variant={timeframe === "yearly" ? "default" : "outline"}
+              onClick={() => handleTimeframeChange("yearly")}
+              className="text-sm"
+            >
+              Yearly
+            </Button>
+          </div>
           <Input
             placeholder="Search by time..."
             value={searchTerm}
@@ -107,11 +160,11 @@ export default function SolarDataTable() {
                 <th className="px-4 py-3 text-left border-b">
                   <Button
                     variant="ghost"
-                    onClick={() => handleSort("solarRadiation")}
+                    onClick={() => handleSort("solarIrradiation")}
                     className="font-semibold flex items-center gap-2"
                   >
                     <Sun className="w-4 h-4 text-yellow-500" />
-                    Solar Radiation {getSortIcon("solarRadiation")}
+                    Solar Irradiation {getSortIcon("solarIrradiation")}
                   </Button>
                 </th>
                 <th className="px-4 py-3 text-left border-b">
@@ -144,7 +197,7 @@ export default function SolarDataTable() {
                 >
                   <td className="px-4 py-3 border-b">{row.time}</td>
                   <td className="px-4 py-3 border-b text-right">
-                    {row.solarRadiation} W/m²
+                    {row.solarIrradiation} W/m²
                   </td>
                   <td className="px-4 py-3 border-b text-right">
                     {row.predictedOutput} kWh
