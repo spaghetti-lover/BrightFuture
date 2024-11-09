@@ -12,7 +12,7 @@ import {
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const TimelinePredictionChart = () => {
+const TimelinePredictionChart = ({ title }: { title: string }) => {
   // Sample data for different time periods
   const hourlyData = Array.from({ length: 24 }, (_, i) => ({
     time: `${i}:00`,
@@ -97,7 +97,7 @@ const TimelinePredictionChart = () => {
                 stroke="#666"
                 fontSize={12}
                 tickLine={false}
-                tickFormatter={(value) => `$${value}`}
+                tickFormatter={(value) => `${value}`}
               />
               <Tooltip
                 contentStyle={{
@@ -119,10 +119,7 @@ const TimelinePredictionChart = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-sm text-gray-600 mt-4 text-center">
-          Estimated savings over different time periods. Toggle between views to
-          see detailed predictions.
-        </p>
+        <h1 className="font-bold text-gray-600 mt-4 text-center">{title}</h1>
       </CardContent>
     </Card>
   );

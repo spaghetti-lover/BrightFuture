@@ -1,12 +1,13 @@
+import { Sun } from "lucide-react";
 import Link from "next/link";
 import { FiAlignJustify } from "react-icons/fi";
+
 const Header = () => {
   const MenuLinks = [
     {
       title: "Dự đoán",
       url: "/estimator",
     },
-
     {
       title: "Tư vấn lắp đặt",
       url: "/consulting",
@@ -24,34 +25,33 @@ const Header = () => {
       url: "/about",
     },
   ];
+
   return (
-    <>
-      <div className="h-[60px] fixed top-0 left-0 right-0 mx-auto flex content-center items-center justify-between border-b-2 border-orange-500 bg-white z-[9999]">
-        <div className="flex items-center content-center h-full">
-          <FiAlignJustify className="h-full mr-[15px] text-[24px] text-title-grey" />
-          <a
-            href="/"
-            className="h-full text-[24px] text-title-grey font-medium"
-          >
+    <div className="mx-auto h-[60px] fixed top-0 left-0 right-0 flex items-center justify-between border-b-2 border-orange-500 bg-white shadow-md z-[9999]">
+      <Link href={"/"}>
+        <div className="flex items-center h-full px-4">
+          <Sun className="h-8 w-8 text-orange-500 mr-[10px]" />
+          <span className="text-2xl font-bold text-blue-900">
             Bright Future
-          </a>
+          </span>
         </div>
-        <nav className="h-full">
-          <ul className="flex items-center h-full">
-            {MenuLinks.map((item, index) => (
-              <li
-                key={index}
-                className="px-[10px] flex items-center h-full text-text-grey text-[15px]"
-              >
-                <Link className="" href={item.url}>
-                  <span>{item.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-    </>
+      </Link>
+      <nav className="h-full">
+        <ul className="flex h-full">
+          {MenuLinks.map((item, index) => (
+            <li
+              key={index}
+              className="px-4 flex items-center h-full text-text-grey text-[15px] hover:text-orange-500 transition-colors duration-300"
+            >
+              <Link href={item.url}>
+                <span>{item.title}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
   );
 };
+
 export default Header;

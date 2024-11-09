@@ -2,7 +2,7 @@ import Link from "next/link";
 const Footer = () => {
   const MenuLinks = [
     {
-      title: "About",
+      title: "Giới thiệu",
       url: "/about",
     },
     {
@@ -10,23 +10,25 @@ const Footer = () => {
       url: "/faq",
     },
     {
-      title: "Privacy",
+      title: "Quyền riêng tư",
       url: "/privacy",
     },
     {
-      title: "Terms",
+      title: "Điều khoản",
       url: "/terms",
     },
     {
-      title: "Send feedback",
+      title: "Phản hồi",
       url: "/feedback",
     },
   ];
   return (
     <>
-      <div className="h-[60px] fixed bottom-0 left-0 right-0 mx-auto flex  items-center py-[30px] border-t-2 border-orange-500 z-50 bg-[#f5f5f5]">
-        <div className="text-[18px] mr-[200px] text-title-grey font-bold">
-          Bright Future
+      <div className="h-[60px] bottom-0 left-0 right-0 mx-auto flex  items-center py-[30px] border-t-2 border-orange-500 z-50 bg-[#f5f5f5]">
+        <div className="flex items-center h-full px-4">
+          <span className="text-xl font-bold text-title-grey">
+            Bright Future
+          </span>
         </div>
         <nav>
           <ul className="flex items-center">

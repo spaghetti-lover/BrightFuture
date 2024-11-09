@@ -6,13 +6,14 @@ const Section3 = () => {
       <div className="bg-[#f8f8f8] flex flex-col items-center py-[40px]">
         <div className="w-[75%]">
           <h2 className="font-bold text-[32px] mb-[20px] text-center">
-            Customized savings estimate
+            Dự đoán công suất điện mặt trời của bạn
           </h2>
           <p className="text-center mb-[40px]">
-            Solar savings are calculated using roof size and shape, shaded roof
-            areas, local weather, local electricity prices, solar costs, and
-            estimated incentives over time. Using a sample address, take a look
-            at the detailed estimate Future Bright can give you.
+            Tiết kiệm năng lượng mặt trời được tính toán bằng cách sử dụng kích
+            thước và hình dạng mái nhà, khu vực mái che ,thời tiết địa phương,
+            giá điện địa phương, chi phí năng lượng mặt trời và các ưu đãi ước
+            tính theo thời gian. Sử dụng một địa chỉ mẫu, hãy xem ước tính chi
+            tiết mà Bright Future có thể cung cấp cho bạn.
           </p>
           <div className="flex justify-evenly">
             <div>
@@ -30,9 +31,9 @@ const Section3 = () => {
                     className="mr-[10px]"
                   />
                   <div>
-                    <h3>1,479 hours of usable sunlight per year</h3>
+                    <h3>1,479 giờ năng lượng tái sử dụng mỗi năm</h3>
                     <p className="font-light text-[#212121] text-[14px]">
-                      Based on day-to-day analysis of weather patterns
+                      Dựa vào dữ liệu thời tiết đo đạc được
                     </p>
                   </div>
                 </div>
@@ -46,19 +47,19 @@ const Section3 = () => {
                     className="mr-[10px]"
                   />
                   <div>
-                    <h3>1,479 hours of usable sunlight per year</h3>
+                    <h3>8m2 lắp đặt được pin mặt trời</h3>
                     <p className="font-light text-[#212121] text-[14px]">
-                      Based on day-to-day analysis of weather patterns
+                      Dựa vào độ che phủ, hình dạng mái nhà
                     </p>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-[24px]">$18,000 savings </h3>
+              <h3 className="text-[24px]">$18,000 tiết kiệm được </h3>
               <p className="font-light text-[#212121] text-[14px] mb-[20px]">
-                Estimated net savings for roof over 20 years{" "}
+                Số tiền dự đoán sẽ tiết kiệm được trong tương lai{" "}
               </p>
-              <Button title="Check my roof" />
+              <Button title="Kiểm tra mái nhà" />
             </div>
             <Image
               src="/images/masked-house.png"

@@ -1,33 +1,82 @@
-import { Users, Building2 } from "lucide-react";
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Home, Building2, Factory } from "lucide-react";
 import Link from "next/link";
-const Estimators = () => {
+
+const CustomerTypeSelector = () => {
+  const customerTypes = [
+    {
+      id: "household",
+      icon: <Home className="w-12 h-12" />,
+      title: "Hộ gia đình",
+      description: "Giải pháp năng lượng mặt trời cho nhà ở",
+      color: "blue",
+      link: "/estimator/household",
+    },
+    {
+      id: "business",
+      icon: <Building2 className="w-12 h-12" />,
+      title: "Doanh nghiệp",
+      description: "Tối ưu chi phí năng lượng cho doanh nghiệp",
+      color: "green",
+      link: "/estimator/business",
+    },
+    {
+      id: "factory",
+      icon: <Factory className="w-12 h-12" />,
+      title: "Nhà máy điện",
+      description: "Giải pháp điện mặt trời quy mô lớn",
+      color: "orange",
+      link: "/estimator/factory",
+    },
+  ];
+
   return (
-    <>
-      <div className="flex items-center justify-center align-middle pt-[150px]">
-        <Link
-          href="estimator/household"
-          className="flex flex-col items-center border rounded-lg p-5 w-72 shadow-md mr-[15px]"
-        >
-          <Users size={48} />
-          <h4 className="font-semibold text-lg mb-3">Hộ gia đình</h4>
-        </Link>
-        <Link
-          href="/estimator/business"
-          className="flex flex-col items-center border rounded-lg p-5 w-72 shadow-md mr-[15px]"
-        >
-          <Building2 size={48} />
-          <h4 className="font-semibold text-lg mb-3">Doanh nghiệp</h4>
-        </Link>
-        <Link
-          href="/estimator/factory"
-          className="flex flex-col items-center border rounded-lg p-5 w-72 shadow-md mr-[15px]"
-        >
-          <Building2 size={48} />
-          <h4 className="font-semibold text-lg mb-3">Nhà máy điện</h4>
-        </Link>
+    <div className="max-w-6xl mx-auto px-4 py-12">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold mb-4">Chọn loại dịch vụ</h2>
+        <p className="text-gray-600">
+          Chúng tôi có giải pháp phù hợp cho mọi nhu cầu của bạn
+        </p>
       </div>
-    </>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {customerTypes.map((type) => (
+          <Link href={type.link}>
+            <Card
+              key={type.id}
+              className="group relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <CardContent className="p-8">
+                <div className="relative z-10">
+                  <div
+                    className={`mb-6 text-${type.color}-500 transform group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    {type.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{type.title}</h3>
+                  <p className="text-gray-600 text-sm">{type.description}</p>
+                </div>
+
+                {/* Decorative background circle */}
+                <div
+                  className={`absolute top-0 right-0 w-32 h-32 bg-${type.color}-50 rounded-full -mr-16 -mt-16 transition-transform duration-300 group-hover:scale-150`}
+                ></div>
+
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </CardContent>
+
+              {/* Bottom border highlight */}
+              <div
+                className={`absolute bottom-0 left-0 w-full h-1 bg-${type.color}-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
+              ></div>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default Estimators;
+export default CustomerTypeSelector;

@@ -30,7 +30,17 @@ const generateData = () => {
 
 const initialData = generateData();
 
-export default function SolarDataTable() {
+interface SolarDataTableProps {
+  title: string;
+  column: string;
+  unit: string;
+}
+
+export default function SolarDataTable({
+  title,
+  column,
+  unit,
+}: SolarDataTableProps) {
   const [data, setData] = useState(initialData);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
@@ -106,12 +116,10 @@ export default function SolarDataTable() {
   };
 
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full my-[30px] max-w-4xl">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl text-purple-800">
-            Solar Irradiation Data
-          </CardTitle>
+          <CardTitle className="text-xl text-purple-800">{title}</CardTitle>
           <div className="flex gap-2">
             <Button
               variant={timeframe === "hourly" ? "default" : "outline"}
@@ -164,7 +172,7 @@ export default function SolarDataTable() {
                     className="font-semibold flex items-center gap-2"
                   >
                     <Sun className="w-4 h-4 text-yellow-500" />
-                    Solar Irradiation {getSortIcon("solarIrradiation")}
+                    {column} {getSortIcon("solarIrradiation")}
                   </Button>
                 </th>
                 <th className="px-4 py-3 text-left border-b">
@@ -197,7 +205,7 @@ export default function SolarDataTable() {
                 >
                   <td className="px-4 py-3 border-b">{row.time}</td>
                   <td className="px-4 py-3 border-b text-right">
-                    {row.solarIrradiation} W/m²
+                    {row.solarIrradiation} {unit}
                   </td>
                   <td className="px-4 py-3 border-b text-right">
                     {row.predictedOutput} kWh

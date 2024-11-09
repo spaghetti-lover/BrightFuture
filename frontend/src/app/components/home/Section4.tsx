@@ -5,14 +5,16 @@ const Section4 = () => {
     <div className="flex flex-col items-center py-[40px]">
       <div className="w-[75%]">
         <h2 className="font-bold text-[32px] mb-[20px] text-center">
-          Area-wide solar potential
+          Khai phá tiềm năng của năng lượng mặt trời
         </h2>
         <p className="text-center mb-[40px]">
-          Search for a city, state, or zip code to see solar potential and
-          impact across entire geographic areas. We currently have solar data
-          for portions of 10 cities and Ha Noi. See if we’ve got you covered.
+          Sử dụng tọa độ, địa chỉ để xác định năng lượng điện từ năng lượng mặt
+          trời cũng như lượng chi phí tối ưu được cho người dùng
         </p>
-        <LinkButton text="Explore your area" color="text-primary-orange" />
+        <LinkButton
+          text="Khám phá khu vực của bạn"
+          color="text-primary-orange"
+        />
         <Image
           src="/images/coverage.png"
           alt="coverage"
