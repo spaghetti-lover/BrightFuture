@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Home, Building2, Factory } from "lucide-react";
 import Link from "next/link";
 
-const CustomerTypeSelector = () => {
+const EstimatorPage = () => {
   const customerTypes = [
     {
       id: "household",
@@ -79,4 +79,4 @@ const CustomerTypeSelector = () => {
   );
 };
 
-export default CustomerTypeSelector;
+export default EstimatorPage;
