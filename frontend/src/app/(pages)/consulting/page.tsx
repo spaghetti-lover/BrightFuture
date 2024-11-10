@@ -42,7 +42,7 @@ const ConsultingPage = () => {
 
       <div className="grid md:grid-cols-3 gap-8">
         {customerTypes.map((type) => (
-          <Link href={type.link}>
+          <Link key={type.id} href={type.link}>
             <Card
               key={type.id}
               className="group relative overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
