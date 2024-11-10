@@ -50,7 +50,7 @@ const TimelinePredictionChart = ({ title }: { title: string }) => {
   };
 
   return (
-    <Card className="w-full max-w-4xl bg-white shadow-lg">
+    <Card className="w-full my-[15px] max-w-4xl bg-white shadow-lg">
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl text-purple-800"></CardTitle>

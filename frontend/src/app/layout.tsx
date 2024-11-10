@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <Header />
-        <div className="my-[60px]">{children}</div>
+        <div className="mt-[60px]">{children}</div>
         <Footer />
         <ChatBot />
       </body>

@@ -32,7 +32,7 @@ const EstimatorPage = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="max-w-6xl mb-[100px] mx-auto px-4 py-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold mb-4">Chọn loại dịch vụ</h2>
         <p className="text-gray-600">
@@ -60,7 +60,11 @@ const EstimatorPage = () => {
 
                 {/* Decorative background circle */}
                 <div
-                  className={`absolute top-0 right-0 w-32 h-32 bg-${type.color}-50 rounded-full -mr-16 -mt-16 transition-transform duration-300 group-hover:scale-150`}
+                  className={`absolute top-0 right-0 w-32 h-32 ${
+                    type.color != "blue"
+                      ? `bg-${type.color}-100`
+                      : `bg-${type.color}-50`
+                  } rounded-full -mr-16 -mt-16 transition-transform duration-300 group-hover:scale-150`}
                 ></div>
 
                 {/* Hover overlay */}

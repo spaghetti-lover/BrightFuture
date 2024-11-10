@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Maximize } from "lucide-react";
+import MapComponent from "./MapComponent";
 
 const SolarAnalysis = () => {
   const [inputType, setInputType] = useState("address");
@@ -30,17 +31,15 @@ const SolarAnalysis = () => {
   };
 
   return (
-    <div className="relative w-full h-screen bg-gray-200">
+    <div className="relative w-full bg-gray-200">
       {/* Map container */}
-      <div className="absolute inset-0 bg-orange-400">
-        {/* Placeholder for map */}
-        <div className="absolute top-4 right-4 bg-white p-2 rounded-sm cursor-pointer">
-          <Maximize size={24} />
-        </div>
+      <MapComponent />
+      <div className="absolute top-4 right-4 bg-white p-2 rounded-sm cursor-pointer z-50">
+        <Maximize size={24} />
       </div>
 
       {/* Analysis overlay */}
-      <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 w-150">
+      <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 w-150 z-50">
         <div className="mb-4">
           <div className="flex gap-2 mb-4">
             <button
@@ -180,16 +179,16 @@ const SolarAnalysis = () => {
       </div>
 
       {/* Heatmap legend */}
-      <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow p-2 flex items-center">
+      {/* <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow p-2 flex items-center z-50">
         <span className="mr-2">Shady</span>
         <div className="w-32 h-4 bg-gradient-to-r from-purple-500 via-orange-500 to-yellow-300 rounded"></div>
         <span className="ml-2">Sunny</span>
-      </div>
+      </div> */}
 
       {/* Map attribution */}
-      <div className="absolute bottom-1 left-1 text-xs text-gray-600">
+      {/* <div className="absolute bottom-1 left-1 text-xs text-gray-600 z-50">
         Keyboard shortcuts | Map data ©2024 Google | Terms
-      </div>
+      </div> */}
     </div>
   );
 };

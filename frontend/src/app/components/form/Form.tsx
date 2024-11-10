@@ -27,7 +27,7 @@ const FormSolar = ({ link }: { link: string }) => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
+    <div className=" w-full flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-md p-6 space-y-6">
         <div className="flex space-x-2">
           <Button
@@ -39,7 +39,7 @@ const FormSolar = ({ link }: { link: string }) => {
             }`}
             onClick={() => setActiveTab("address")}
           >
-            Address
+            Địa chỉ
           </Button>
           <Button
             variant={activeTab === "coordinates" ? "default" : "secondary"}
@@ -50,14 +50,14 @@ const FormSolar = ({ link }: { link: string }) => {
             }`}
             onClick={() => setActiveTab("coordinates")}
           >
-            Coordinates
+            Tọa độ
           </Button>
         </div>
 
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Enter the plant capacity in kW
+              Công suất nhà máy theo kW
             </label>
             <div className="flex items-center">
               <Input
@@ -83,34 +83,45 @@ const FormSolar = ({ link }: { link: string }) => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">
-              Enter address
-            </label>
-            <Input defaultValue="114, Xuan Thuy" />
-          </div>
+          {activeTab === "address" ? (
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Nhập địa chỉ
+              </label>
+              <Input defaultValue="114, Xuan Thuy" />
+            </div>
+          ) : (
+            <div>
+              <label className="block text-sm text-gray-600 mb-1">
+                Nhập kinh độ
+              </label>
+              <Input defaultValue="114, Xuan Thuy" />
+              <label className="block text-sm text-gray-600 mb-1">
+                Nhập vĩ độ
+              </label>
+              <Input defaultValue="114, Xuan Thuy" />
+            </div>
+          )}
 
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Select your Time Zone
+              Lựa chọn múi giờ
             </label>
             <select className="w-full border rounded-md p-2">
               <option>Asia/Ho_Chi_Minh</option>
             </select>
           </div>
-
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Select a model
+              Chọn mô hình
             </label>
             <select className="w-full border rounded-md p-2">
               <option>450Wp_44V_Mono</option>
             </select>
           </div>
-
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Enter surface tilt
+              Nhập độ nghiêng
             </label>
             <div className="space-y-2">
               <Input
@@ -133,10 +144,9 @@ const FormSolar = ({ link }: { link: string }) => {
               </div>
             </div>
           </div>
-
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Enter surface azimuth (180 means facing direct to south)
+              Nhập góc phương vị bề mặt (180 nghĩa là hướng thẳng về hướng Nam)
             </label>
             <div className="space-y-2">
               <Input
@@ -159,10 +169,9 @@ const FormSolar = ({ link }: { link: string }) => {
               </div>
             </div>
           </div>
-
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Enter plant Performance Ratio (%PR)
+              Nhập tỷ lệ hiệu suất của nhà máy (%PR)
             </label>
             <div className="flex items-center">
               <Input
@@ -193,7 +202,7 @@ const FormSolar = ({ link }: { link: string }) => {
             className="w-full outline-none bg-blue-500 hover:bg-blue-600 text-white mt-[15px]"
             onClick={handleSubmit}
           >
-            Submit
+            Gửi
           </Button>
         </Link>
       </Card>

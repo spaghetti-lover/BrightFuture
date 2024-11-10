@@ -5,7 +5,6 @@ import Section3 from "@/app/components/household/Section3";
 const HouseholdPage = () => {
   return (
     <>
-      <Section1 />
       <Section2 />
       <Section3 />
     </>

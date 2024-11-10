@@ -12,6 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import Link from "next/link";
 
 const Factory = () => {
   const [forecastData, setForecastData] = useState(null);
@@ -41,7 +42,7 @@ const Factory = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-6">
+    <div className="mx-auto p-4 space-y-6">
       {/* Hero Section */}
       <Card className="overflow-hidden">
         <div className="relative h-96">
@@ -140,6 +141,17 @@ const Factory = () => {
               </div>
             )}
           </div>
+          {forecastData && (
+            <div className="text-center mt-4">
+              <Link href="/consulting/factory">
+                <Button className="mt-[15px] bg-orange-500 hover:bg-orange-600">
+                  <span className="flex items-center gap-2 font">
+                    Tư vấn ngay
+                  </span>
+                </Button>
+              </Link>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

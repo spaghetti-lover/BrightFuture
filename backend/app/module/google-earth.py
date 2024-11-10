@@ -740,5 +740,5 @@ Map.draw_control.on_draw(handle_draw)
 # # Đăng ký sự kiện khi xóa ROI
 Map.draw_control.on_draw(handle_deleted)
 # Display the map
-
+Map.save("map.html")
 # To activate modes, use set_marker_mode() or set_roi_mode() as needed

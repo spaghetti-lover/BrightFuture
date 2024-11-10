@@ -5,42 +5,45 @@ import { Card, CardContent } from "@/components/ui/card";
 const About = () => {
   const teamMembers = [
     {
-      name: "Sarah Johnson",
-      role: "CEO & Founder",
-      description: "15+ years in renewable energy",
+      name: "Qúy Minh",
+      role: "Techlead",
+      image: "/images/ducanh.jpg",
+      description: "Trưởng dự án",
     },
     {
-      name: "Michael Chen",
-      role: "Technical Director",
-      description: "Solar systems expert",
+      name: "Đức Anh",
+      role: "Frontend Developer",
+      image: "/images/ngocanh.jpg",
+      description: "Phát triển giao diện cho ứng dụng",
     },
     {
-      name: "Emma Williams",
-      role: "Customer Success",
-      description: "Energy consultant specialist",
+      name: "Ngọc Ánh",
+      role: "Backend Developer",
+      image: "/images/ngocanh.jpg",
+      description: "Chuyên gia về năng lượng sạch và hệ thống",
     },
     {
-      name: "David Garcia",
-      role: "Lead Engineer",
-      description: "Installation expert",
+      name: "Viết Hoàng",
+      role: "Backend Developer",
+      description: "Phát triển bản đồ",
     },
   ];
 
   const companyStats = [
     {
       icon: <Sun className="w-8 h-8 text-purple-600" />,
-      number: "1000+",
-      label: "Installations",
+      number: "5000+",
+      label: "Người dùng ứng dụng",
     },
     {
       icon: <Users className="w-8 h-8 text-purple-600" />,
-      number: "5000+",
-      label: "Happy Customers",
+      number: "2500+",
+      label: "Khách hàng hài lòng",
     },
     {
       icon: <Award className="w-8 h-8 text-purple-600" />,
       number: "50+",
-      label: "Awards",
+      label: "Giải thưởng",
     },
   ];
 
@@ -48,13 +51,11 @@ const About = () => {
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Powering a Bright Future
-        </h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Bright Future</h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          At Bright Future, we're committed to making solar energy accessible
-          and affordable for everyone. Our mission is to accelerate the world's
-          transition to sustainable energy.
+          Tại Bright Future, chúng tôi cam kết làm cho năng lượng mặt trời dễ
+          tiếp cận và giá cả phải chăng cho mọi người. Sứ mệnh của chúng tôi là
+          đẩy nhanh quá trình chuyển đổi của thế giới sang năng lượng bền vững.
         </p>
       </div>
 
@@ -83,27 +84,26 @@ const About = () => {
             <Target className="w-12 h-12 text-purple-600" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Our Mission
-            </h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Sứ mệnh</h2>
             <p className="text-gray-600 mb-4">
-              We envision a world where clean, renewable energy is the standard,
-              not the exception. Our team works tirelessly to make this vision a
-              reality through innovative solar solutions, exceptional customer
-              service, and ongoing technological advancement.
+              Chúng tôi hình dung một thế giới mà năng lượng sạch, tái tạo là
+              tiêu chuẩn, không phải là ngoại lệ. Nhóm của chúng tôi làm việc
+              không mệt mỏi để biến tầm nhìn này thành hiện thực thông qua các
+              giải pháp năng lượng mặt trời sáng tạo, dịch vụ khách hàng đặc
+              biệt và tiến bộ công nghệ liên tục.
             </p>
             <ul className="space-y-2 text-gray-600">
               <li className="flex items-center">
                 <Sun className="w-5 h-5 text-purple-600 mr-2" />
-                Leading innovation in solar technology
+                Công nghệ tiên tiến hàng đầu
               </li>
               <li className="flex items-center">
                 <Users className="w-5 h-5 text-purple-600 mr-2" />
-                Building lasting customer relationships
+                Gắn bó với khách hàng và cộng đồng
               </li>
               <li className="flex items-center">
                 <Award className="w-5 h-5 text-purple-600 mr-2" />
-                Maintaining highest quality standards
+                Duy trì uy tín và chất lượng
               </li>
             </ul>
           </div>
@@ -113,15 +113,13 @@ const About = () => {
       {/* Team Section */}
       <div className="mb-16">
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-          Meet Our Team
+          Team chúng tôi
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map((member, index) => (
             <Card key={index} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <Users className="w-12 h-12 text-purple-600" />
-                </div>
+                <div className="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center bg-[url('/images/ducanh.jpg')] bg-cover"></div>
                 <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
                   {member.name}
                 </h3>
@@ -140,14 +138,14 @@ const About = () => {
       {/* Contact CTA */}
       <div className="text-center bg-purple-600 text-white rounded-2xl p-12">
         <h2 className="text-3xl font-bold mb-4">
-          Ready to Join the Solar Revolution?
+          Sử dụng năng lượng sạch và tiết kiệm chi phí ngay hôm nay
         </h2>
         <p className="mb-8 max-w-2xl mx-auto">
-          Contact us today to learn how we can help you transition to clean,
-          renewable energy and start saving on your energy bills.
+          Liên hệ với chúng tôi để biết thêm thông tin về giải pháp năng lượng
+          và nhận được sự tư vấn phù hợp
         </p>
         <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-          Contact Us
+          Liên hệ
         </button>
       </div>
     </div>

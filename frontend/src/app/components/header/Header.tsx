@@ -9,10 +9,6 @@ const Header = () => {
       url: "/estimator",
     },
     {
-      title: "Tư vấn lắp đặt",
-      url: "/consulting",
-    },
-    {
       title: "Lịch sử",
       url: "/history",
     },

@@ -1,6 +1,9 @@
+"use client";
 import TimelinePredictionChart from "@/app/components/chart/TimelinePredictionChart";
 import SolarAnalysis from "@/app/components/household/SolarAnalysis";
 import SolarDataTable from "@/app/components/table/SolarDataTable";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const ResultPage = () => {
   return (
@@ -20,6 +23,11 @@ const ResultPage = () => {
           unit="kWh"
         />
         <TimelinePredictionChart title="Solar Energy Production (kWh)" />
+        <Link href="/consulting/household">
+          <Button className="mt-[15px] mb-[15px] bg-orange-500 hover:bg-orange-600">
+            <span className="flex items-center gap-2 font">Tư vấn ngay</span>
+          </Button>
+        </Link>
       </div>
     </>
   );

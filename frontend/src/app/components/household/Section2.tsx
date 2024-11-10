@@ -29,16 +29,16 @@ const Section2 = () => {
   return (
     <div className="bg-background-grey py-[40px]">
       <div className="flex flex-col items-center">
-        <Heading title="Fine-tune your information to find out how much you could save. " />
+        <Heading title="Cung cấp thông tin chính xác để xác định được khoảng tiền tiết kiệm của bạn" />
         <div className="flex gap-5 mb-[40px]">
           {/* Average Monthly Electric Bill Card */}
           <div className="border rounded-lg p-5 w-72 text-center shadow-md">
             <h4 className="font-semibold text-lg mb-3">
-              YOUR AVERAGE MONTHLY ELECTRIC BILL
+              HÓA ĐƠN ĐIỆN HÀNG THÁNG
             </h4>
             <p className="text-sm text-gray-600 mb-4">
-              We use your bill to estimate how much electricity you use based on
-              typical utility rates in youEstimatorCardr area.
+              Chúng tôi sử dụng hóa đơn của bạn để ước tính lượng điện bạn sử
+              dụng dựa trên mức giá tiện ích thông thường tại khu vực của bạn
             </p>
             <select
               value={bill}
@@ -55,11 +55,12 @@ const Section2 = () => {
           {/* Recommended Solar Installation Size Card */}
           <div className="border rounded-lg p-5 w-72 text-center shadow-md">
             <h4 className="font-semibold text-lg mb-3">
-              YOUR RECOMMENDED SOLAR INSTALLATION SIZE
+              LOẠI PIN MẶT TRỜI PHÙ HỢP CHO BẠN
             </h4>
             <p className="text-sm text-gray-600 mb-4">
-              This size will cover about 87% of your electricity usage. Solar
-              installations are sized in kilowatts (kW).
+              Kích thước này sẽ đáp ứng khoảng 87% lượng điện sử dụng của bạn.
+              Các hệ thống lắp đặt năng lượng mặt trời được tính theo
+              kilowatt(kW).
             </p>
             <h2 className="text-3xl font-bold mb-2">2.4 kW</h2>
             <p className="text-gray-500">(127 ft²)</p>
@@ -67,11 +68,11 @@ const Section2 = () => {
         </div>
         <div className="border rounded-lg p-5 w-[576px] text-center shadow-md mb-[40px]">
           <h4 className="font-semibold text-lg mb-3 uppercase">
-            Your potential environmental impact
+            Tác động đến môi trường của bạn
           </h4>
           <p className="text-sm text-gray-600 mb-4">
-            Estimated annual environmental impact of the recommended solar
-            installation size.
+            Ước tính tác động môi trường hàng năm của quy mô lắp đặt điện mặt
+            trời được khuyến nghị
           </p>
           <select
             value={bill}
@@ -84,13 +85,13 @@ const Section2 = () => {
             <option value={200}>$200</option>
           </select>
         </div>
-        <div className="border rounded-lg p-5 text-center shadow-md mb-[40px]">
+        <div className="flex flex-col items-center border rounded-lg p-5 text-center shadow-md mb-[40px]">
           <h4 className="font-semibold text-lg mb-3">
-            YOUR RECOMMENDED SOLAR INSTALLATION SIZE
+            LOẠI PIN MẶT TRỜI PHÙ HỢP CHO BẠN
           </h4>
           <p className="text-sm text-gray-600 mb-4">
-            This size will cover about 87% of your electricity usage. Solar
-            installations are sized in kilowatts (kW).
+            Kích thước này sẽ đáp ứng khoảng 87% lượng điện sử dụng của bạn. Các
+            hệ thống lắp đặt năng lượng mặt trời được tính theo kilowatt (kW).
           </p>
           <div className="flex gap-8 mb-[25px]">
             {/* Carbon Dioxide Section */}
