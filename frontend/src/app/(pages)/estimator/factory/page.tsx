@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 
 const Factory = () => {
-  const [forecastData, setForecastData] = useState(null);
+  const [forecastData, setForecastData] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
   // Giả lập dữ liệu dự báo
