@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { BarChart } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -13,7 +11,7 @@ import {
 } from "recharts";
 
 const SolarPlantForecast = () => {
-  const [forecastData, setForecastData] = useState(null);
+  const [forecastData, setForecastData] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
   // Tạo dữ liệu dự báo theo giờ cho 3 ngày
@@ -85,7 +83,7 @@ const SolarPlantForecast = () => {
                       backgroundColor: "white",
                       borderRadius: "6px",
                     }}
-                    formatter={(value) => [
+                    formatter={(value: any) => [
                       `${value.toFixed(2)} kW`,
                       "Công suất",
                     ]}
