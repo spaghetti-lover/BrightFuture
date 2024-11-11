@@ -68,10 +68,11 @@ const FAQ = () => {
     <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Header Section */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Liên hệ</h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Have questions about solar energy solutions? We're here to help.
-          Contact us today and join the renewable energy revolution.
+          Bạn có thắc mắc về các giải pháp năng lượng mặt trời? Chúng tôi ở đây
+          để giúp bạn. Hãy liên hệ với chúng tôi ngay hôm nay và tham gia cuộc
+          cách mạng năng lượng tái tạo.
         </p>
       </div>
 
@@ -80,16 +81,18 @@ const FAQ = () => {
         <div className="space-y-8">
           <Card className="overflow-hidden">
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Our Location
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Trụ sở</h2>
               {/* Placeholder for Map - Replace src with actual map embed URL */}
               <div className="w-full h-64 bg-gray-100 rounded-lg mb-6">
-                <img
-                  src="/api/placeholder/800/400"
-                  alt="Map location"
-                  className="w-full h-full object-cover"
-                />
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2836.537315738252!2d105.78072707379751!3d21.03811208746021!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab351d66d907%3A0x91ac3ecc2db0c654!2zxJDhuqFpIGjhu41jIFF14buRYyBnaWEgSMOgIE7hu5lpLzE0NCDEkC4gWHXDom4gVGjhu6d5LCBE4buLY2ggVuG7jW5nIEjhuq11LCBD4bqndSBHaeG6pXksIEjDoCBO4buZaSwgVmlldG5hbQ!5e1!3m2!1sen!2s!4v1731250722975!5m2!1sen!2s"
+                  width="600"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
             </CardContent>
           </Card>
@@ -97,15 +100,15 @@ const FAQ = () => {
           <Card>
             <CardContent className="p-6 space-y-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Contact Information
+                Thông tin liên hệ
               </h2>
 
               <div className="flex items-start space-x-4">
                 <MapPin className="w-6 h-6 text-purple-600 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Address</h3>
+                  <h3 className="font-semibold text-gray-900">Địa chỉ</h3>
                   <p className="text-gray-600">
-                    123 Solar Street, Green City, 12345
+                    E3, 144, Xuân Thủy, Cầu Giấy, Hà Nội
                   </p>
                 </div>
               </div>
@@ -113,8 +116,8 @@ const FAQ = () => {
               <div className="flex items-start space-x-4">
                 <Phone className="w-6 h-6 text-purple-600 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">Phone</h3>
-                  <p className="text-gray-600">+1 (555) 123-4567</p>
+                  <h3 className="font-semibold text-gray-900">Điện thoại</h3>
+                  <p className="text-gray-600">0334014436</p>
                 </div>
               </div>
 
@@ -122,20 +125,16 @@ const FAQ = () => {
                 <Mail className="w-6 h-6 text-purple-600 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-gray-900">Email</h3>
-                  <p className="text-gray-600">contact@brightfuture.com</p>
+                  <p className="text-gray-600">phungducanh2511@gmail.com</p>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
                 <Clock className="w-6 h-6 text-purple-600 flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-gray-900">
-                    Business Hours
-                  </h3>
-                  <p className="text-gray-600">
-                    Monday - Friday: 9:00 AM - 6:00 PM
-                  </p>
-                  <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
+                  <h3 className="font-semibold text-gray-900">Giờ làm việc</h3>
+                  <p className="text-gray-600">Thứ 2 - 6: 9:00 AM - 6:00 PM</p>
+                  <p className="text-gray-600">Thứ 7: 10:00 AM - 4:00 PM</p>
                 </div>
               </div>
             </CardContent>
@@ -146,12 +145,12 @@ const FAQ = () => {
         <Card>
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Send us a Message
+              Gửi tin nhắn cho chúng tôi
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name
+                  Tên bạn
                 </label>
                 <input
                   type="text"
@@ -170,7 +169,7 @@ const FAQ = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                  Email
                 </label>
                 <input
                   type="email"
@@ -189,7 +188,7 @@ const FAQ = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number
+                  Số điện thoại
                 </label>
                 <input
                   type="tel"
@@ -208,7 +207,7 @@ const FAQ = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Message
+                  Tin nhắn của bạn
                 </label>
                 <textarea
                   name="message"
@@ -233,19 +232,20 @@ const FAQ = () => {
                 {submitStatus === "sending" ? (
                   <>
                     <div className="w-5 h-5 border-t-2 border-white rounded-full animate-spin" />
-                    <span>Sending...</span>
+                    <span>Đang gửi...</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-5 h-5" />
-                    <span>Send Message</span>
+                    <span>Gửi tin</span>
                   </>
                 )}
               </button>
 
               {submitStatus === "success" && (
                 <div className="mt-4 p-4 bg-green-100 text-green-700 rounded-lg">
-                  Thank you for your message! We'll get back to you soon.
+                  Cảm ơn bạn đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi
+                  nhanh nhất có thể.
                 </div>
               )}
             </form>

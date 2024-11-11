@@ -3,27 +3,46 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SolarAnalysisInterface } from "@/app/interfaces/form/SolarAnalysisInterface";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const FormSolar = ({ link }: { link: string }) => {
-  const [capacity, setCapacity] = useState(0);
-  const [tilt, setTilt] = useState(0);
-  const [azimuth, setAzimuth] = useState(0);
+  const [capacity, setCapacity] = useState(5);
+  const [lat, setLat] = useState(10.7769);
+  const [lon, setLon] = useState(106.6951);
+  const [tilt, setTilt] = useState(20);
+  const [model, setModel] = useState("450Wp_44V_Mono");
+  const [azimuth, setAzimuth] = useState(180);
   const [pr, setPr] = useState(81);
   const [activeTab, setActiveTab] = useState("address");
+
+  const router = useRouter();
+  const handleLatChange = (e: any) => {
+    const value = parseFloat(e.target.value);
+    setLat(value);
+  };
+
+  const handleLonChange = (e: any) => {
+    const value = parseFloat(e.target.value);
+    setLon(value);
+  };
 
   const handleTiltChange = (e: any) => {
     const value = parseFloat(e.target.value);
     setTilt(value);
   };
-
+  const handleModelChange = (e: any) => {
+    const value = e.target.value;
+    setModel(value);
+  };
   const handleAzimuthChange = (e: any) => {
     const value = parseFloat(e.target.value);
     setAzimuth(value);
   };
 
-  const handleSubmit = (e: any) => {
-    console.log({ capacity, tilt, azimuth, pr });
+  const handleSubmit = async (e: React.FormEvent) => {
+    // Construct the URL with query parameters
   };
 
   return (
@@ -95,11 +114,11 @@ const FormSolar = ({ link }: { link: string }) => {
               <label className="block text-sm text-gray-600 mb-1">
                 Nhập kinh độ
               </label>
-              <Input defaultValue="114, Xuan Thuy" />
-              <label className="block text-sm text-gray-600 mb-1">
+              <Input value={lon} onChange={handleLonChange} />
+              <label className="block text-sm text-gray-600 mt-3 mb-1">
                 Nhập vĩ độ
               </label>
-              <Input defaultValue="114, Xuan Thuy" />
+              <Input value={lat} onChange={handleLatChange} />
             </div>
           )}
 
@@ -115,8 +134,15 @@ const FormSolar = ({ link }: { link: string }) => {
             <label className="block text-sm text-gray-600 mb-1">
               Chọn mô hình
             </label>
-            <select className="w-full border rounded-md p-2">
+            <select
+              className="w-full border rounded-md p-2"
+              onChange={handleModelChange}
+            >
               <option>450Wp_44V_Mono</option>
+              <option>500Wp_39V_Mono_PERC</option>
+              <option>545Wp_41V_Mono_PERC</option>
+              <option>600Wp_45V_Mono_PERC</option>
+              <option>620Wp_46V_Mono_PERC</option>
             </select>
           </div>
           <div>
@@ -197,7 +223,20 @@ const FormSolar = ({ link }: { link: string }) => {
             </div>
           </div>
         </div>
-        <Link href={link}>
+        <Link
+          href={{
+            pathname: link,
+            query: {
+              capacity: capacity,
+              lat: lat,
+              lon: lon,
+              tilt: tilt,
+              model: model,
+              azimuth: azimuth,
+              pr: pr,
+            },
+          }}
+        >
           <Button
             className="w-full outline-none bg-blue-500 hover:bg-blue-600 text-white mt-[15px]"
             onClick={handleSubmit}

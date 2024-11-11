@@ -39,7 +39,7 @@ const SolarAnalysis = () => {
       </div>
 
       {/* Analysis overlay */}
-      <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4 w-150 z-50">
+      <div className="absolute top-2 left-3 bg-white rounded-lg shadow-lg p-4 w-150 z-50">
         <div className="mb-4">
           <div className="flex gap-2 mb-4">
             <button

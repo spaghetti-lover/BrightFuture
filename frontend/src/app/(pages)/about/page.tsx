@@ -7,13 +7,13 @@ const About = () => {
     {
       name: "Qúy Minh",
       role: "Techlead",
-      image: "/images/ducanh.jpg",
+      image: "/images/quyminh.jpg",
       description: "Trưởng dự án",
     },
     {
       name: "Đức Anh",
       role: "Frontend Developer",
-      image: "/images/ngocanh.jpg",
+      image: "/images/ducanh.jpg",
       description: "Phát triển giao diện cho ứng dụng",
     },
     {
@@ -25,6 +25,7 @@ const About = () => {
     {
       name: "Viết Hoàng",
       role: "Backend Developer",
+      image: "/images/viethoang.jpg",
       description: "Phát triển bản đồ",
     },
   ];
@@ -119,7 +120,10 @@ const About = () => {
           {teamMembers.map((member, index) => (
             <Card key={index} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
-                <div className="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center bg-[url('/images/ducanh.jpg')] bg-cover"></div>
+                <div
+                  className="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center bg-cover"
+                  style={{ backgroundImage: `url(${member.image})` }}
+                ></div>
                 <h3 className="text-xl font-bold text-gray-900 text-center mb-2">
                   {member.name}
                 </h3>
