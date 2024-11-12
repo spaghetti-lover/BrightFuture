@@ -2,13 +2,22 @@
 import React, { useState } from "react";
 import { Maximize } from "lucide-react";
 import MapComponent from "./MapComponent";
+import { DailyData } from "@/app/interfaces/form/SolarAnalysisInterface";
+import { SolarAnalysisInterface } from "@/app/interfaces/form/SolarAnalysisInterface";
+import { calculateSolarPowerHour } from "@/app/helpers/calculateSolarPower";
 
-const SolarAnalysis = () => {
+const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
   const [inputType, setInputType] = useState("address");
   const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [showAnalysis, setShowAnalysis] = useState(true);
+  let usableSunlightHoursPerYear = 0;
+
+  if (data) {
+    const dailyData: DailyData[] = data.daily_values;
+    usableSunlightHoursPerYear = calculateSolarPowerHour(dailyData);
+  }
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -140,7 +149,8 @@ const SolarAnalysis = () => {
                 />
                 <div>
                   <div className="font-bold">
-                    1,361 hours of usable sunlight per year
+                    {usableSunlightHoursPerYear} hours of usable sunlight per
+                    year
                   </div>
                   <div className="text-sm text-gray-600">
                     Based on day-to-day analysis of weather patterns

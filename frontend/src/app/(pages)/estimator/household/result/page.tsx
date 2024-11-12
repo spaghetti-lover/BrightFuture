@@ -24,15 +24,12 @@ const ResultPage = ({
   const [data, setData] = useState<any>(null);
   const getSolarAnalysis = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/statistics/?capacity=5&latitude=10.7769&longitude=106.6951&timezone=Asia%2FHo_Chi_Minh&model=450Wp_44V_Mono&surface_tilt=20&surface_azimuth=180&performance_ratio=81",
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(url, {
+        method: "GET",
+      });
       const data = await response.json();
       if (data) {
-        console.log(data);
+        setData(data);
       }
     } catch (error) {
       console.error(error);
@@ -44,7 +41,7 @@ const ResultPage = ({
   return (
     <>
       <div className="flex flex-col items-center">
-        <SolarAnalysis />
+        <SolarAnalysis data={data} />
         <SolarDataTable
           title="Solar Irradation Values"
           column="Solar Irradiation"
