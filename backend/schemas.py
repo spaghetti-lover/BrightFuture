@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Dict, List
 from typing import List, Dict, Union
-
+from typing import Optional, Dict
 
 class CO2Response(BaseModel):
     co2_from_kwh: float
@@ -10,23 +10,6 @@ class CO2Response(BaseModel):
     equivalent_phones: float
 
     messages: Dict[str, str]
-
-class PVResponse(BaseModel):
-    kwh_generated: float
-    messages: Dict[str, str]
-    units: Dict[str, str] = {
-        "kwh_generated": "kWh",
-        "panel_area(m²)": "Total solar panel Area",
-        "panel_yield(%)": "Solar panel yield or efficiency",
-        "solar_radiation(kWh/m²)": "Annual average solar radiation on tilted panels (shadings not included)", 
-        "performance_ratio(%)": "Performance ratio, coefficient for losses (range between 0.5 and 0.9, default value = 0.75)",
-        "Example:":" solar panel 400W, 2m², 5 hours of solar radiation,0.75 performance ratio",
-        "panel_yield": "= 400W/(2m²x1000W/m²) = 0.2 = 20%",
-        "Solar_radiation": "= 5 x 1kWh/m² = 5kWh/m²",
-        "Electricity": "= 2m² x 20% x 5kWh/m² x 0.75 = 1.5kWh/day"
-        }
-from pydantic import BaseModel
-from typing import List, Union
 
 class DailyValue(BaseModel):
     date: str  # Date as a string, e.g., "2024-01-01"
@@ -55,3 +38,24 @@ class StatisticResponse(BaseModel):
     system_capacity: Union[float, int]
     performance_ratio: float
     module_efficiency: float
+
+class ChatRequest(BaseModel):
+    message: str
+    session_id: Optional[str] = None
+    language: Optional[str] = None
+    create_new_session: bool | None = False
+
+
+
+class UserContext(BaseModel):
+    capacity: Optional[float] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    timezone: Optional[str] = None
+    model: Optional[str] = None
+    surface_tilt: Optional[float] = None
+    surface_azimuth: Optional[float] = None
+    performance_ratio: Optional[float] = None
+    current_question: Optional[str] = None
+    chat_history: list = []
+    is_complete: bool = False

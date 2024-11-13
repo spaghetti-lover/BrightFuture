@@ -6,7 +6,7 @@ import pandas as pd
 from pvlib import location, irradiance
 from typing import Dict, List, Tuple
 
-def get_statistics(capacity: float, latitude: float, longitude: float, timezone: str, 
+async def get_statistics(capacity: float, latitude: float, longitude: float, timezone: str, 
                   model: str, surface_tilt: float, surface_azimuth: float, 
                   performance_ratio: float) -> Dict:
     """
@@ -39,7 +39,7 @@ def get_statistics(capacity: float, latitude: float, longitude: float, timezone:
     def calculate_solar_radiation() -> Tuple[pd.Series, pd.Series, float, pd.DataFrame]:
         """Calculate solar radiation using pvlib"""
         site = location.Location(latitude, longitude, timezone)
-        times = pd.date_range(start='2024-01-01', end='2025-01-01', freq='H', tz=timezone)
+        times = pd.date_range(start='2024-01-01', end='2025-01-01', freq='h', tz=timezone)
         times = times[:-1]
         
         solar_position = site.get_solarposition(times)
@@ -60,7 +60,7 @@ def get_statistics(capacity: float, latitude: float, longitude: float, timezone:
         })
         
         daily_gii = radiation_df['total_radiation'].resample('D').sum() / 1000
-        monthly_gii = radiation_df['total_radiation'].resample('M').sum() / 1000
+        monthly_gii = radiation_df['total_radiation'].resample('ME').sum() / 1000
         yearly_gii = radiation_df['total_radiation'].sum() / 1000
         
         return daily_gii, monthly_gii, yearly_gii, radiation_df

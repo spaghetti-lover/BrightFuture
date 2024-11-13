@@ -6,7 +6,7 @@ from schemas import StatisticResponse  # Ensure the correct import path
 router = APIRouter()
 
 @router.get("/", response_model=StatisticResponse)
-def get_statistics_route(
+async def get_statistics_route(
     capacity: Union[float, int], 
     latitude: Union[float, int], 
     longitude: Union[float, int], 
@@ -17,7 +17,7 @@ def get_statistics_route(
     performance_ratio: Union[float, int]
 ) -> StatisticResponse:
     try:
-        return get_statistics(
+        return await get_statistics(
             capacity, latitude, longitude, timezone, model, surface_tilt, surface_azimuth, performance_ratio
         )
     except ValueError:
