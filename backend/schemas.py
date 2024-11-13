@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 from typing import Dict
 
+class ForecastResponse(BaseModel):
+    date: str
+    PredictedTotalPower: float
+
 class CO2Response(BaseModel):
     co2_from_kwh: float
     equivalent_trees: float
