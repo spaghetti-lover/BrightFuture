@@ -38,4 +38,3 @@ class UserContext(BaseModel):
     current_question: Optional[str] = None # Store the current question being asked
     chat_history: list = []
     is_complete: bool = False # Store whether the user has completed the survey
-    contact_collected: bool = False # Store whether the user has provided contact information

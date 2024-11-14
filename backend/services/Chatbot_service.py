@@ -75,7 +75,7 @@ class ChatbotService:
         print(f"Processing message: {message} for session: {session_id}")
         context = self._get_context(session_id)
 
-        # Retrieve count_analysis from Redis or initialize it if not present
+
         count_analysis = int(self.redis_client.get(f"{session_id}:count_analysis") or 0)
 
         if not context.get("greeted"):
@@ -83,10 +83,14 @@ class ChatbotService:
 
         if not context.get("confirmed"):
             return await self._handle_confirmation(message, context, session_id, language)
-        print(f"count_analysis: {count_analysis}")
         
-        # Set the logic based on count_analysis value
+
         if count_analysis == 2:
+            if context.get("contact_complete"):
+                count_analysis = 9
+                self.redis_client.set(f"{session_id}:count_analysis", count_analysis)  # Save updated count_analysis to Redis
+                return await self._generate_completion_response(context, message, session_id, language)
+
             if not context.get("contact_greeted"):
                 return await self._handle_contact_greeting(context, session_id, language)
 
@@ -96,15 +100,15 @@ class ChatbotService:
             contact_parameter = context.get('current_question') or self._get_next_empty_contact_parameter(context)
             if not contact_parameter:
                 count_analysis = 9
+                self.redis_client.set(f"{session_id}:count_analysis", count_analysis)  # Save updated count_analysis to Redis
+
                 return await self._handle_contact_completion(context, session_id, language)
 
             if context.get('current_question'):
                 return await self._process_current_contact_question(context, contact_parameter, message, session_id, language)
         if context.get('is_complete'):
-            print("Incrementing count_analysis")
             count_analysis += 1
             self.redis_client.set(f"{session_id}:count_analysis", count_analysis)  # Save updated count_analysis to Redis
-            print(f"Updated count_analysis: {count_analysis}")
 
             return await self._generate_completion_response(context, message, session_id, language)
 
@@ -188,7 +192,7 @@ class ChatbotService:
         
     
     async def _generate_completion_response(self, context, message, session_id, language) -> Dict:
-        answer = await self._generate_prompt_response(context, message, language)
+        answer = await self._generate_prompt_response(context, message, language,session_id)
         context['chat_history'].append({"role": "assistant", "content": answer})
         await self._save_context(session_id, context)
         return {
@@ -283,10 +287,18 @@ class ChatbotService:
             "chat_history": context['chat_history']
         }
 
-    async def _generate_prompt_response(self, context, message, language):
+    async def _generate_prompt_response(self, context, message, language, session_id) -> str:
+        # Check if statistics have already been calculated and stored in context
+        if "stats" not in context:
+            # Call get_statistics only if not already in context
+            stats = await self.get_statistics(context)
+            context["stats"] = stats  # Store the result in context for future use
+            await self._save_context(session_id, context)  # Save updated context to Redis or other storage
+        else:
+            # Reuse the stored statistics
+            stats = context["stats"]
+
         collected_data = "\n".join([f"{k}: {v}" for k, v in context.items() if k in self.questions_vi.keys()])
-        
-        stats = await self.get_statistics(context)
         stats_summary = self._create_analysis_prompt(stats, language)
         
         prompt = (
@@ -330,7 +342,7 @@ class ChatbotService:
                 return param
         return None
     def _validate_parameter(self, parameter: str, value: str) -> Tuple[bool, Optional[float]]:
-        """Validate user input for a parameter"""
+        """Validate user input for a parameter and ensure it’s converted to a numeric type if needed."""
         try:
             if parameter == "model":
                 return True, value.strip()
@@ -339,9 +351,11 @@ class ChatbotService:
                 if value in pytz.all_timezones:
                     return True, value
             
+            # Remove '%' and strip whitespace before converting to float
             value = value.replace("%", "").strip()
-            float_value = float(value)
+            float_value = float(value)  # Convert the input to a float
 
+            # Apply specific validations
             if parameter == "capacity" and float_value <= 0:
                 return False, None
             elif parameter == "performance_ratio":
@@ -352,10 +366,9 @@ class ChatbotService:
             elif parameter in ["surface_tilt", "surface_azimuth"] and (float_value < 0 or float_value > 360):
                 return False, None
 
-            return True, float_value
+            return True, float_value  # Always return a numeric type for validated parameters
         except ValueError:
             return False, None
-
     def _get_validation_error_message(self, parameter: str, language: str) -> str:
         if language == "vi":
             messages = {
@@ -381,15 +394,16 @@ class ChatbotService:
         return messages.get(parameter, "Invalid input, please try again.")
 
     async def get_statistics(self, context: Dict) -> Dict:
+        # Ensure context parameters are converted to the correct numeric type before calculation
         return calculate_solar_energy(
-            plant_capacity=context['capacity'],
-            latitude=context['latitude'],
-            longitude=context['longitude'],
+            plant_capacity=float(context['capacity']),
+            latitude=float(context['latitude']),
+            longitude=float(context['longitude']),
             timezone=context['timezone'],
             module_selection=context['model'],
-            surface_tilt=context['surface_tilt'],
-            surface_azimuth=context['surface_azimuth'],
-            performance_ratio=context['performance_ratio']
+            surface_tilt=float(context['surface_tilt']),
+            surface_azimuth=float(context['surface_azimuth']),
+            performance_ratio=float(context['performance_ratio'])
         )
 
     def _create_analysis_prompt(self, stats: dict, language: str) -> str:
