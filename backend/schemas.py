@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 class ForecastResponse(BaseModel):
     date: str
@@ -20,3 +20,21 @@ class CO2Response(BaseModel):
 
     messages: Dict[str, str]
 
+class ChatRequest(BaseModel):
+    message: str
+    session_id: Optional[str] = None
+    language: Optional[str] = None
+    create_new_session: bool | None = False
+
+class UserContext(BaseModel):
+    capacity: Optional[float] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    timezone: Optional[str] = None
+    model: Optional[str] = None
+    surface_tilt: Optional[float] = None
+    surface_azimuth: Optional[float] = None
+    performance_ratio: Optional[float] = None
+    current_question: Optional[str] = None
+    chat_history: list = []
+    is_complete: bool = False

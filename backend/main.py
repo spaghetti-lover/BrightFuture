@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes import co2_routes, forecast_routes, solar_routes
+from routes import co2_routes, forecast_routes, Chatbot_routes, pv_routes
 
 app = FastAPI()
 
@@ -16,7 +16,13 @@ app.include_router(
 )
 
 app.include_router(
-    solar_routes.router, 
+    pv_routes.router, 
     prefix="/solar", 
     tags=["Solar Calculations"]
-) 
+)
+
+app.include_router(
+    Chatbot_routes.router,
+    prefix="/chatbot",
+    tags=["Chatbot"]
+)
