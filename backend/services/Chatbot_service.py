@@ -12,7 +12,7 @@ from airtable import Airtable
 
 load_dotenv()
 
-GEMINI_KEY = 'AIzaSyBVT_FFh6FL7yR5YBBm0TVRmHQzQkqoLFo'
+GEMINI_KEY = os.getenv("GEMINI_KEY")
 
 genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
