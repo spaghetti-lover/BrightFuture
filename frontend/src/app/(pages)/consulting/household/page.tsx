@@ -1,6 +1,6 @@
-import Section1 from "@/app/components/household/SolarAnalysis";
-import Section2 from "@/app/components/household/Section2";
-import Section3 from "@/app/components/household/Section3";
+import Section1 from "@/app/components/estimator/SolarAnalysis";
+import Section2 from "@/app/components/estimator/Section2";
+import Section3 from "@/app/components/estimator/Section3";
 
 const HouseholdPage = () => {
   return (

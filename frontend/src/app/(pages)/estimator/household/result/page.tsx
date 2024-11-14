@@ -1,7 +1,7 @@
 "use client";
 import TimelinePredictionChart from "@/app/components/chart/TimelinePredictionChart";
-import SolarAnalysis from "@/app/components/household/SolarAnalysis";
-import SolarDataTable from "@/app/components/table/SolarDataTable";
+import SolarAnalysis from "@/app/components/estimator/SolarAnalysis";
+import SolarDataTable from "@/app/components/table/SolarIrradationTable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const ResultPage = ({
   const { capacity, lat, lon, tilt, model, azimuth, pr } = searchParams;
   const url = `http://localhost:8000/statistics/?capacity=${capacity}&latitude=${lat}&longitude=${lon}&timezone=Asia%2FHo_Chi_Minh&model=${model}&surface_tilt=${tilt}&surface_azimuth=${azimuth}&performance_ratio=${pr}`;
   const [data, setData] = useState<any>(null);
+  console.log("Data truoc phan tich:", searchParams);
   const getSolarAnalysis = async () => {
     try {
       const response = await fetch(url, {
@@ -29,6 +30,7 @@ const ResultPage = ({
       });
       const data = await response.json();
       if (data) {
+        console.log("Data sau phan tich:", data);
         setData(data);
       }
     } catch (error) {

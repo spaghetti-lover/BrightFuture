@@ -1,5 +1,6 @@
 import React from "react";
 import { Sun, Map, ArrowRight, LucideProps } from "lucide-react";
+import Link from "next/link";
 
 const Section1 = () => {
   return (
@@ -31,10 +32,12 @@ const Section1 = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <button className="group flex items-center px-8 py-4 bg-orange-500 text-white rounded-xl shadow-lg hover:bg-orange-600 transition-all duration-300">
-              <span className="font-medium">TƯ VẤN NGAY</span>
-              <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-            </button>
+            <Link href={"/estimator"}>
+              <button className="group flex items-center px-8 py-4 bg-orange-500 text-white rounded-xl shadow-lg hover:bg-orange-600 transition-all duration-300">
+                <span className="font-medium">TƯ VẤN NGAY</span>
+                <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
 
             <button className="group flex items-center px-8 py-4 bg-white/80 backdrop-blur-sm text-blue-600 rounded-xl hover:bg-white transition-all duration-300">
               <Map className="w-5 h-5 mr-2" />

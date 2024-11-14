@@ -3,21 +3,25 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SolarAnalysisInterface } from "@/app/interfaces/form/SolarAnalysisInterface";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const FormSolar = ({ link }: { link: string }) => {
+  let dictionary = [
+    "Số 12, ngõ 88, phố Trần Quang Diệu",
+    "VNU University of Engineering and Technology",
+  ];
   const [capacity, setCapacity] = useState(5);
   const [lat, setLat] = useState(10.7769);
   const [lon, setLon] = useState(106.6951);
+  const [address, setAddress] = useState("");
   const [tilt, setTilt] = useState(20);
   const [model, setModel] = useState("450Wp_44V_Mono");
   const [azimuth, setAzimuth] = useState(180);
   const [pr, setPr] = useState(81);
   const [activeTab, setActiveTab] = useState("address");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const router = useRouter();
   const handleLatChange = (e: any) => {
     const value = parseFloat(e.target.value);
     setLat(value);
@@ -40,9 +44,19 @@ const FormSolar = ({ link }: { link: string }) => {
     const value = parseFloat(e.target.value);
     setAzimuth(value);
   };
-
+  const handleAddress = (e: any) => {
+    setAddress(e.target.value);
+  };
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
-    // Construct the URL with query parameters
+    e.preventDefault();
+    if (dictionary.includes(address) || activeTab === "coordinates") {
+      router.push(
+        `${link}?capacity=${capacity}&lat=${lat}&lon=${lon}&tilt=${tilt}&model=${model}&azimuth=${azimuth}&pr=${pr}`
+      );
+    } else {
+      setErrorMessage("Address is not valid");
+    }
   };
 
   return (
@@ -107,18 +121,21 @@ const FormSolar = ({ link }: { link: string }) => {
               <label className="block text-sm text-gray-600 mb-1">
                 Nhập địa chỉ
               </label>
-              <Input defaultValue="114, Xuan Thuy" />
+              <Input onChange={handleAddress} />
+              {errorMessage && (
+                <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+              )}
             </div>
           ) : (
             <div>
               <label className="block text-sm text-gray-600 mb-1">
                 Nhập kinh độ
               </label>
-              <Input value={lon} onChange={handleLonChange} />
+              <Input onChange={handleLatChange} />
               <label className="block text-sm text-gray-600 mt-3 mb-1">
                 Nhập vĩ độ
               </label>
-              <Input value={lat} onChange={handleLatChange} />
+              <Input onChange={handleLonChange} />
             </div>
           )}
 
@@ -213,11 +230,7 @@ const FormSolar = ({ link }: { link: string }) => {
               >
                 -
               </Button>
-              <Button
-                variant="ghost"
-                className="px-2"
-                onClick={() => setPr(pr + 1)}
-              >
+              <Button variant="ghost" className="px-2">
                 +
               </Button>
             </div>
@@ -238,6 +251,7 @@ const FormSolar = ({ link }: { link: string }) => {
           }}
         >
           <Button
+            type="submit"
             className="w-full outline-none bg-blue-500 hover:bg-blue-600 text-white mt-[15px]"
             onClick={handleSubmit}
           >
