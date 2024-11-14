@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,26 +16,47 @@ import {
 import Link from "next/link";
 
 const Factory = () => {
-  const [forecastData, setForecastData] = useState(undefined);
+  interface Request {
+    start_date: string;
+    end_date: string;
+  }
+
+  interface ForecastData {
+    date: string;
+    PredictedTotalPower: number;
+  }
+  const [forecastData, setForecastData] = useState([
+    {
+      date: "2024-11-15 07:00:00",
+      PredictedTotalPower: 1.0034186840057373,
+    },
+  ]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const fetchForecastData = async (
+    forecastRequest: Request
+  ): Promise<ForecastData[]> => {
+    try {
+      const response = await axios.post<ForecastData[]>(
+        "http://localhost:8000/forecast/forecast",
+        forecastRequest
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error sending forecast request:", error);
+      throw error;
+    }
+  };
+
   // Giả lập dữ liệu dự báo
-  const generateForecastData = () => {
+  const generateForecastData = async () => {
     setIsLoading(true);
     // Tạo ngày cho 3 ngày tiếp theo
-    const forecast: any = [];
-    const today = new Date();
-
-    for (let i = 1; i <= 3; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      forecast.push({
-        date: date.toLocaleDateString("vi-VN"),
-        prediction: Math.floor(Math.random() * (1000 - 800) + 800),
-        confidence: 95,
-      });
-    }
-
+    let forecast: ForecastData[] = await fetchForecastData({
+      start_date: Date.now.toString(),
+      end_date: Date.now.toString(),
+    });
+    console.log(forecast);
     setTimeout(() => {
       setForecastData(forecast);
       setIsLoading(false);
@@ -118,17 +140,40 @@ const Factory = () => {
               </Button>
             </div>
 
-            {forecastData && (
+            {isLoading == false && forecastData.length > 2 && (
               <div className="h-80 mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={forecastData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[700, 1100]} />
-                    <Tooltip />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={(tick) => {
+                        const date = new Date(tick);
+                        const hours = date.getHours();
+                        const minutes = date.getMinutes();
+                        const ampm = hours >= 12 ? "PM" : "AM";
+                        const formattedHours = hours % 12 || 12;
+                        const formattedMinutes =
+                          minutes < 10 ? `0${minutes}` : minutes;
+                        return `${formattedHours}:${formattedMinutes} ${ampm}`;
+                      }}
+                    />
+                    <YAxis domain={[0, 5]} />
+                    <Tooltip
+                      labelFormatter={(label) => {
+                        const date = new Date(label);
+                        const hours = date.getHours();
+                        const minutes = date.getMinutes();
+                        const ampm = hours >= 12 ? "PM" : "AM";
+                        const formattedHours = hours % 12 || 12;
+                        const formattedMinutes =
+                          minutes < 10 ? `0${minutes}` : minutes;
+                        return `${formattedHours}:${formattedMinutes} ${ampm}`;
+                      }}
+                    />
                     <Line
                       type="monotone"
-                      dataKey="prediction"
+                      dataKey="PredictedTotalPower"
                       stroke="#f97316"
                       strokeWidth={2}
                       name="Sản lượng dự kiến (kWh)"

@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import React, { useState } from "react";
 import { MessageCircle, X, Send, ChevronUp, ChevronDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,11 +22,57 @@ const ChatBot = () => {
     "Cách cải thiện hiệu suất của tấm pin mặt trời?",
     "Cần bảo trì gì cho các tấm pin mặt trời?",
   ];
+  interface ChatRequest {
+    message: string;
+    session_id?: string;
+    language?: string;
+    create_new_session?: boolean;
+  }
 
-  const handleSend = () => {
+  interface ChatResponse {
+    message: string;
+    is_complete: boolean;
+    chat_history: {
+      role: string;
+      content: string;
+    }[];
+  }
+
+  const sendChatRequest = async (
+    chatRequest: ChatRequest
+  ): Promise<ChatResponse> => {
+    try {
+      const response = await axios.post<ChatResponse>(
+        "http://localhost:8000/chatbot/chat",
+        chatRequest
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error sending chat request:", error);
+      throw error;
+    }
+  };
+
+  const handleSend = async () => {
+    let answer = "";
     if (message.trim()) {
       // Add user message
       setChatHistory([...chatHistory, { type: "user", content: message }]);
+      try {
+        const chatRequest: ChatRequest = {
+          message: message,
+          session_id: "string",
+          language: "string",
+          create_new_session: false,
+        };
+        const response = await sendChatRequest(chatRequest);
+        answer =
+          response["chat_history"][response["chat_history"].length - 1][
+            "content"
+          ];
+      } catch (error) {
+        console.error("There was an error making the request!", error);
+      }
 
       // Simulate bot response
       setTimeout(() => {
@@ -33,7 +80,7 @@ const ChatBot = () => {
           ...prev,
           {
             type: "bot",
-            content: "Xin lỗi, hiện tại tôi chưa có câu trả lời",
+            content: answer,
           },
         ]);
       }, 1000);
@@ -127,7 +174,7 @@ const ChatBot = () => {
                     type="text"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && handleSend()}
+                    onKeyDown={(e) => e.key === "Enter" && handleSend()}
                     placeholder="Type your message..."
                     className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
                   />

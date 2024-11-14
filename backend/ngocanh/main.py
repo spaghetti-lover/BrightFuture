@@ -1,21 +1,22 @@
 from fastapi import FastAPI
-from routes import co2_routes, PV_routes, Statistics_routes
 from fastapi.middleware.cors import CORSMiddleware
+from routes import co2_routes, forecast_routes, Chatbot_routes, pv_routes
 
 app = FastAPI()
-# Add CORS middleware
-origins = [
-    "http://localhost:3000",
-]
 
+# Thêm CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Cho phép tất cả các nguồn gốc, bạn có thể thay đổi điều này
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Cho phép tất cả các phương thức HTTP
+    allow_headers=["*"],  # Cho phép tất cả các headers
 )
-app.include_router(co2_routes.router, prefix="/co2", tags=["Carbon dioxide emissions"])
-app.include_router(PV_routes.router, prefix="/PV", tags=["Photovoltaics"])
 
-app.include_router(Statistics_routes.router, prefix="/statistics", tags=["Statistics"])
+app.include_router(co2_routes.router, prefix="/co2", tags=["Carbon dioxide emissions"])
+
+app.include_router(forecast_routes.router, prefix="/forecast", tags=["Forecast"])
+
+app.include_router(pv_routes.router, prefix="/solar", tags=["Solar Calculations"])
+
+app.include_router(Chatbot_routes.router, prefix="/chatbot", tags=["Chatbot"])

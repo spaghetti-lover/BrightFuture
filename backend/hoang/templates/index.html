@@ -195,10 +195,12 @@
     <script>
       // [Previous JavaScript code remains the same]
       var queryParams = getQueryParams();
+
       var lat = queryParams.lat ? parseFloat(queryParams.lat) : 10.762622;
       var lon = queryParams.lon ? parseFloat(queryParams.lon) : 106.660172;
-      console.log(lat, lon);
+
       var map = L.map("map").setView([lat, lon], 18);
+      getSolarData(lat, lon);
       if (marker) {
         marker.setLatLng([lat, lon]);
       } else {

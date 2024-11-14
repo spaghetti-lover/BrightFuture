@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ModelSelect from "./ModelSelect";
 
 const FormSolar = ({ link }: { link: string }) => {
   let dictionary = [
@@ -21,30 +22,89 @@ const FormSolar = ({ link }: { link: string }) => {
   const [pr, setPr] = useState(81);
   const [activeTab, setActiveTab] = useState("address");
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
 
-  const handleLatChange = (e: any) => {
+  const options = [
+    {
+      label: "450Wp_44V_Mono",
+      img: "/images/450Wp_44V_Mono.png",
+      manufacturer: "Hanwha Q Cells",
+      efficiency: 20.2,
+      length: 2163,
+      width: 1030,
+      area: 2.22789,
+      wattPeak: 450,
+    },
+    {
+      label: "500Wp_39V_Mono_PERC",
+      img: "/images/500Wp_39V_Mono_PERC.jpg",
+      manufacturer: "LONGi",
+      efficiency: 21.1,
+      length: 2094,
+      width: 1134,
+      area: 2.374596,
+      wattPeak: 500,
+    },
+    {
+      label: "545Wp_41V_Mono_PERC",
+      img: "/images/545Wp_41V_Mono_PERC.jpg",
+      manufacturer: "Jinko Solar",
+      efficiency: 21.13,
+      length: 2278,
+      width: 1134,
+      area: 2.583252,
+      wattPeak: 545,
+    },
+    {
+      label: "600Wp_45V_Mono_PERC",
+      img: "/images/600Wp_45V_Mono_PERC.jpg",
+      manufacturer: "Jinko Solar",
+      efficiency: 21.48,
+      length: 2465,
+      width: 1134,
+      area: 2.79531,
+      wattPeak: 600,
+    },
+    {
+      label: "620Wp_46V_Mono_PERC",
+      img: "/images/620Wp_46V_Mono_PERC.jpg",
+      manufacturer: "Jinko Solar",
+      efficiency: 22.19,
+      length: 2465,
+      width: 1134,
+      area: 2.79531,
+      wattPeak: 620,
+    },
+  ];
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    setSelectedModel(selectedValue);
+    handleModelChange(selectedValue);
+  };
+
+  const handleLatChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setLat(value);
   };
 
-  const handleLonChange = (e: any) => {
+  const handleLonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setLon(value);
   };
 
-  const handleTiltChange = (e: any) => {
+  const handleTiltChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setTilt(value);
   };
-  const handleModelChange = (e: any) => {
-    const value = e.target.value;
+  const handleModelChange = (value: string) => {
     setModel(value);
   };
-  const handleAzimuthChange = (e: any) => {
+  const handleAzimuthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     setAzimuth(value);
   };
-  const handleAddress = (e: any) => {
+  const handleAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
   const router = useRouter();
@@ -90,7 +150,7 @@ const FormSolar = ({ link }: { link: string }) => {
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-gray-600 mb-1">
-              Công suất nhà máy theo kW
+              Tổng công suất hệ thống pin (kW)
             </label>
             <div className="flex items-center">
               <Input
@@ -147,21 +207,36 @@ const FormSolar = ({ link }: { link: string }) => {
               <option>Asia/Ho_Chi_Minh</option>
             </select>
           </div>
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">
+          {/* <div>
+             <label className="block text-sm text-gray-600 mb-1">
               Chọn mô hình
-            </label>
-            <select
+            </label> 
+             <select
               className="w-full border rounded-md p-2"
-              onChange={handleModelChange}
+              value={selectedModel}
+              onChange={handleChange}
             >
-              <option>450Wp_44V_Mono</option>
-              <option>500Wp_39V_Mono_PERC</option>
-              <option>545Wp_41V_Mono_PERC</option>
-              <option>600Wp_45V_Mono_PERC</option>
-              <option>620Wp_46V_Mono_PERC</option>
+              <option value="">Select a model</option>
+              {options.map((option, index) => (
+                <option key={index} value={option.label}>
+                  {option.label}
+                </option>
+              ))}
             </select>
-          </div>
+            <div className="option-preview mt-2">
+              {selectedModel && (
+                <img
+                  src={
+                    options.find((option) => option.label === selectedModel)
+                      ?.img
+                  }
+                  alt={selectedModel}
+                  className="w-32 h-32 object-cover mt-2"
+                />
+              )}
+            </div> 
+          </div> */}
+          <ModelSelect />
           <div>
             <label className="block text-sm text-gray-600 mb-1">
               Nhập độ nghiêng
@@ -236,28 +311,13 @@ const FormSolar = ({ link }: { link: string }) => {
             </div>
           </div>
         </div>
-        <Link
-          href={{
-            pathname: link,
-            query: {
-              capacity: capacity,
-              lat: lat,
-              lon: lon,
-              tilt: tilt,
-              model: model,
-              azimuth: azimuth,
-              pr: pr,
-            },
-          }}
+        <Button
+          type="submit"
+          className="w-full outline-none bg-blue-500 hover:bg-blue-600 text-white mt-[15px]"
+          onClick={handleSubmit}
         >
-          <Button
-            type="submit"
-            className="w-full outline-none bg-blue-500 hover:bg-blue-600 text-white mt-[15px]"
-            onClick={handleSubmit}
-          >
-            Gửi
-          </Button>
-        </Link>
+          Gửi
+        </Button>
       </Card>
     </div>
   );

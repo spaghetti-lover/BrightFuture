@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import { DailyData } from "@/app/interfaces/form/SolarAnalysisInterface";
 import { SolarAnalysisInterface } from "@/app/interfaces/form/SolarAnalysisInterface";
 import { calculateSolarPowerHour } from "@/app/helpers/calculateSolarPower";
-import SolarMap from "./MapComponent";
-import SimpleSolarMap from "./MapComponent";
 
 const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
   const [inputType, setInputType] = useState("address");
@@ -14,10 +12,10 @@ const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
   const [showAnalysis, setShowAnalysis] = useState(true);
   let usableSunlightHoursPerYear = 0;
 
-  if (data) {
-    const dailyData: DailyData[] = data.daily_values;
-    usableSunlightHoursPerYear = calculateSolarPowerHour(dailyData);
-  }
+  // if (data) {
+  //   const dailyData: DailyData[] = data.daily_values;
+  //   usableSunlightHoursPerYear = calculateSolarPowerHour(dailyData);
+  // }
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -48,7 +46,8 @@ const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
     <div className="relative w-full bg-gray-200">
       {/* <div className="h-[600px] w-full bg-gray-400 bg-[url('/images/solar.png')] bg-cover"></div> */}
       <iframe
-        src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d298.1834136886554!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab70b95c36c5%3A0x6cc1da673ea579d3!2sHanoi%20University%20Of%20Culture!5e1!3m2!1sen!2s!4v1731539928843!5m2!1sen!2s`}
+        // src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d298.1834136886554!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab70b95c36c5%3A0x6cc1da673ea579d3!2sHanoi%20University%20Of%20Culture!5e1!3m2!1sen!2s!4v1731539928843!5m2!1sen!2s`}
+        src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2836.5348155533816!2d105.7801040737975!3d21.038243387455555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2sVNU%20University%20of%20Engineering%20and%20Technology!5e1!3m2!1sen!2s!4v1731599998757!5m2!1sen!2s`}
         width="100%"
         height="600"
         style={{ border: 0 }}
@@ -88,7 +87,8 @@ const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
                 />
                 <div>
                   <div className="font-bold">
-                    {usableSunlightHoursPerYear} tiếng nắng mỗi năm
+                    {/* {usableSunlightHoursPerYear} tiếng nắng mỗi năm */}
+                    2938 tiếng nắng mỗi năm
                   </div>
                   <div className="text-sm text-gray-600">
                     Dựa trên dữ liệu thời tiết gần đây
