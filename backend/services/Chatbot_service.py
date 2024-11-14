@@ -12,7 +12,7 @@ from airtable import Airtable
 
 load_dotenv()
 
-GEMINI_KEY = os.getenv("GEMINI_KEY")
+GEMINI_KEY = 'AIzaSyBVT_FFh6FL7yR5YBBm0TVRmHQzQkqoLFo'
 
 genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
@@ -69,15 +69,17 @@ class ChatbotService:
         self.intro_contact_question_en = "If you would like to become our customer, please provide your contact information."
 
         self.contact_questions_vi = {
-            "name": "Bạn có thể cho tôi biết tên của bạn không?",
-            "phone_number": "Bạn có thể cung cấp số điện thoại của bạn không?",
-            "address": "Bạn có thể cho tôi biết địa chỉ của bạn không?"
+            # "name": "Bạn có thể cho tôi biết tên của bạn không?",
+            # "phone_number": "Bạn có thể cung cấp số điện thoại của bạn không?",
+            # "address": "Bạn có thể cho tôi biết địa chỉ của bạn không?"
+            "Information": "Bạn có thể cho tôi biết tên, email, số điện thoại và địa chỉ được không?"
         }
 
         self.contact_questions_en = {
-            "name": "Could you please provide your name?",
-            "phone_number": "Could you please provide your phone number?",
-            "address": "Could you please provide your address?"
+            # "name": "Could you please provide your name?",
+            # "phone_number": "Could you please provide your phone number?",
+            # "address": "Could you please provide your address?"
+            "Information": "Could you please provide your name, email, phone number, and address?"
         }
         # Other initializations remain the same...
 
@@ -95,7 +97,7 @@ class ChatbotService:
             return await self._handle_confirmation(message, context, session_id, language)
         
 
-        if count_analysis == 2:
+        if count_analysis == 1:
             if context.get("contact_complete"):
                 count_analysis = 9
                 self.redis_client.set(f"{session_id}:count_analysis", count_analysis)  # Save updated count_analysis to Redis
@@ -230,12 +232,12 @@ class ChatbotService:
         )
         context['chat_history'].append({"role": "assistant", "content": completion_message})
         await self._save_context(session_id, context)
-        name = self._get_context(session_id).get('name')
-        phone_number = self._get_context(session_id).get('phone_number')
-        address = self._get_context(session_id).get('address')
-        if name and phone_number and address:
+        content = self._get_context(session_id).get('name')
+        name, email, phone_number, address = content.split(', ')
+        if content:
             data = {
                 "Name": name,
+                "Email": email,
                 "Phone Number": phone_number,
                 "Address": address
             }
@@ -356,7 +358,7 @@ class ChatbotService:
                 return param
         return None
     def _get_next_empty_contact_parameter(self, context: Dict) -> Optional[str]:
-        contact_parameters = ["name", "phone_number", "address"]
+        contact_parameters = ["Information"]
         for param in contact_parameters:
             if not context.get(param):
                 return param
