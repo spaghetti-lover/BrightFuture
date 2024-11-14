@@ -8,6 +8,7 @@ import redis
 from schemas import UserContext
 from services.pv_service import calculate_solar_energy
 import pytz
+from airtable import Airtable
 
 load_dotenv()
 
@@ -15,6 +16,15 @@ GEMINI_KEY = os.getenv("GEMINI_KEY")
 
 genai.configure(api_key=GEMINI_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
+
+base_id = 'appfp2UxnBrJ07HB6'
+table_name = 'customer'
+api_key = 'patRUhLatYudRAVNz.935f51e1657c0dba3bf0a6cc8395456f8525c05a2d6e6927961722da24e7db56'
+airtable = Airtable(base_id, table_name, api_key)
+
+def add_record(data):
+    airtable.insert(data)
+    print("Record added successfully!")
 
 def check_api_connection(model) -> bool:
     try:
@@ -220,6 +230,16 @@ class ChatbotService:
         )
         context['chat_history'].append({"role": "assistant", "content": completion_message})
         await self._save_context(session_id, context)
+        name = self._get_context(session_id).get('name')
+        phone_number = self._get_context(session_id).get('phone_number')
+        address = self._get_context(session_id).get('address')
+        if name and phone_number and address:
+            data = {
+                "Name": name,
+                "Phone Number": phone_number,
+                "Address": address
+            }
+            add_record(data)
         
         # Set count_analysis to 11
         
