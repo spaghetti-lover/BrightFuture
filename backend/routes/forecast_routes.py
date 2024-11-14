@@ -18,8 +18,6 @@ classified_weather_dir = os.path.join(base_dir, "Models", "ClassifiedWeatherType
 fitted_models_dir = os.path.join(base_dir, "Models", "Fitted_Models")
 fitted_standardizers_dir = os.path.join(base_dir, "Models", "Fitted_Standardizers")
 
-app = FastAPI()
-
 config = {
     'target_variable': 'Active_Power',
     'predictors': ['temperature_2m', 'relativehumidity_2m', 'direct_radiation', 'diffuse_radiation', 'windspeed_10m', 'cloudcover', 'season'],
