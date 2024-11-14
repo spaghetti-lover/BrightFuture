@@ -1,4 +1,4 @@
 node_modules
-/backend/app/venv
-/backend/hoang/venv
+backend/app/venv
+backend/hoang/venv
 backend/ngocanh/venv
