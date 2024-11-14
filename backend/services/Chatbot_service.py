@@ -160,7 +160,7 @@ class ChatbotService:
             if not parameter:
                 return await self._handle_completion(context, session_id, language)
 
-            context['current_question'] = parameter
+            context['current_questiocn'] = parameter
         else:
             response = self._get_validation_error_message(parameter, language)
             context['chat_history'].append({"role": "assistant", "content": response})
