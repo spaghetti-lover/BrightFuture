@@ -35,6 +35,7 @@ class UserContext(BaseModel):
     surface_tilt: Optional[float] = None
     surface_azimuth: Optional[float] = None
     performance_ratio: Optional[float] = None
-    current_question: Optional[str] = None
+    current_question: Optional[str] = None # Store the current question being asked
     chat_history: list = []
-    is_complete: bool = False
+    is_complete: bool = False # Store whether the user has completed the survey
+    contact_collected: bool = False # Store whether the user has provided contact information

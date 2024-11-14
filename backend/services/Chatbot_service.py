@@ -29,7 +29,7 @@ check_api_connection(model)
 
 class ChatbotService:
     def __init__(self):
-        self.redis_client = redis.Redis(host='localhost', port=6380, db=0)
+        self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
         
         self.intro_question_vi = "Chào bạn! Bạn có cần tôi tư vấn về năng lượng điện mặt trời không?"
         self.intro_question_en = "Hello! Do you need consultation on solar energy?"
@@ -39,7 +39,7 @@ class ChatbotService:
             "latitude": "Vị trí lắp đặt nằm ở vĩ độ bao nhiêu? (Ví dụ: Hà Nội là 21.0285, TP.HCM là 10.8231)",
             "longitude": "Vị trí lắp đặt nằm ở kinh độ bao nhiêu? (Ví dụ: Hà Nội là 105.8542, TP.HCM là 106.6297)",
             "timezone": "Múi giờ của vị trí lắp đặt là gì? (Ví dụ: 'Asia/Ho_Chi_Minh')",
-            "model": "Bạn dự định sử dụng loại tấm pin nào? (Ví dụ: JinkoSolar Tiger Pro, LONGi Hi-MO 5)",
+            "model": "Bạn dự định sử dụng loại tấm pin nào? (Ví dụ: 450Wp_44V_Mono, LONGi Hi-MO 5)",
             "surface_tilt": "Góc nghiêng của tấm pin so với mặt phẳng ngang là bao nhiêu độ? (Thường từ 10-15 độ)",
             "surface_azimuth": "Góc phương vị của tấm pin là bao nhiêu độ? (Nam: 180, Đông Nam: 135, Đông: 90)",
             "performance_ratio": "Hệ số hiệu suất dự kiến của hệ thống? (Phần trăm)"
@@ -50,23 +50,73 @@ class ChatbotService:
             "latitude": "What is the installation latitude? (Example: Hanoi is 21.0285, HCMC is 10.8231)",
             "longitude": "What is the installation longitude? (Example: Hanoi is 105.8542, HCMC is 106.6297)",
             "timezone": "What is the timezone of the installation location? (Example: 'Asia/Ho_Chi_Minh')",
-            "model": "Which solar panel model do you plan to use? (Example: JinkoSolar Tiger Pro, LONGi Hi-MO 5)",
+            "model": "Which solar panel model do you plan to use? (Example: 500Wp_39V_Mono_PERC, LONGi Hi-MO 5)",
             "surface_tilt": "What is the tilt angle of the panels? (Usually 10-15 degrees)",
             "surface_azimuth": "What is the azimuth angle of the panels? (South: 180, Southeast: 135, East: 90)",
             "performance_ratio": "What is the expected performance ratio? (%)"
         }
+        self.intro_contact_question_vi = "Neu muon tro thanh khach hang cua chung toi, vui long cung cap thong tin lien lac cua ban."
+        self.intro_contact_question_en = "If you would like to become our customer, please provide your contact information."
+
+        self.contact_questions_vi = {
+            "name": "Bạn có thể cho tôi biết tên của bạn không?",
+            "phone_number": "Bạn có thể cung cấp số điện thoại của bạn không?",
+            "address": "Bạn có thể cho tôi biết địa chỉ của bạn không?"
+        }
+
+        self.contact_questions_en = {
+            "name": "Could you please provide your name?",
+            "phone_number": "Could you please provide your phone number?",
+            "address": "Could you please provide your address?"
+        }
+        # Other initializations remain the same...
 
     async def process_message(self, message: str, session_id: str, language: str = "vi") -> Dict:
         print(f"Processing message: {message} for session: {session_id}")
         context = self._get_context(session_id)
+
+        # Retrieve count_analysis from Redis or initialize it if not present
+        count_analysis = int(self.redis_client.get(f"{session_id}:count_analysis") or 0)
 
         if not context.get("greeted"):
             return await self._handle_greeting(context, session_id, language)
 
         if not context.get("confirmed"):
             return await self._handle_confirmation(message, context, session_id, language)
+        print(f"count_analysis: {count_analysis}")
+        
+        # Set the logic based on count_analysis value
+        if count_analysis == 2:
+            if not context.get("contact_greeted"):
+                return await self._handle_contact_greeting(context, session_id, language)
 
-        return await self._handle_conversation_flow(message, context, session_id, language)
+            if not context.get("contact_confirmed"):
+                return await self._handle_contact_confirmation(message, context, session_id, language)
+
+            contact_parameter = context.get('current_question') or self._get_next_empty_contact_parameter(context)
+            if not contact_parameter:
+                count_analysis = 9
+                return await self._handle_contact_completion(context, session_id, language)
+
+            if context.get('current_question'):
+                return await self._process_current_contact_question(context, contact_parameter, message, session_id, language)
+        if context.get('is_complete'):
+            print("Incrementing count_analysis")
+            count_analysis += 1
+            self.redis_client.set(f"{session_id}:count_analysis", count_analysis)  # Save updated count_analysis to Redis
+            print(f"Updated count_analysis: {count_analysis}")
+
+            return await self._generate_completion_response(context, message, session_id, language)
+
+        parameter = context.get('current_question') or self._get_next_empty_parameter(context)
+
+        if not parameter:
+            return await self._handle_completion(context, session_id, language)
+
+        if context.get('current_question'):
+            return await self._process_current_question(context, parameter, message, session_id, language)
+        
+        return await self._ask_next_question(context, parameter, session_id, language)
 
     async def _handle_greeting(self, context, session_id, language) -> Dict:
         context["greeted"] = True
@@ -103,21 +153,40 @@ class ChatbotService:
                 "is_complete": True,
                 "chat_history": context['chat_history']
             }
-
-    async def _handle_conversation_flow(self, message, context, session_id, language) -> Dict:
-        context['chat_history'].append({"role": "user", "content": message})
-        if context.get('is_complete'):
-            return await self._generate_completion_response(context, message, session_id, language)
-
-        parameter = context.get('current_question') or self._get_next_empty_parameter(context)
-        if not parameter:
-            return await self._handle_completion(context, session_id, language)
-
-        if context.get('current_question'):
-            return await self._process_current_question(context, parameter, message, session_id, language)
-
-        return await self._ask_next_question(context, parameter, session_id, language)
-
+    async def _handle_contact_greeting(self, context, session_id, language) -> Dict:
+        context["contact_greeted"] = True
+        greeting = self.intro_contact_question_vi if language == "vi" else self.intro_contact_question_en
+        context['chat_history'].append({"role": "assistant", "content": greeting})
+        await self._save_context(session_id, context)
+        return {
+            "message": greeting,
+            "contact_complete": False,
+            "chat_history": context['chat_history']
+        }
+    async def _handle_contact_confirmation(self, message, context, session_id, language) -> Dict:
+        if message.lower() in ["yes", "có", "ok", "đồng ý"]:
+            context["contact_confirmed"] = True
+            guidance_message = (
+                "Cảm ơn bạn đã đồng ý. Vui lòng cung cấp các thông tin."
+            ) if language == "vi" else (
+                "Thank you for confirming! To begin the consultation, please provide details"
+            )
+            context['chat_history'].append({"role": "assistant", "content": guidance_message})
+            await self._save_context(session_id, context)
+            return {
+                "message": guidance_message,
+                "contact_complete": False,
+                "chat_history": context['chat_history']
+            }
+        else:
+            response = "Xin lỗi, tôi chưa thể giúp bạn với yêu cầu này." if language == "vi" else "Sorry, I can't assist with that request."
+            return {
+                "message": response,
+                "contact_complete": True,
+                "chat_history": context['chat_history']
+            }
+        
+    
     async def _generate_completion_response(self, context, message, session_id, language) -> Dict:
         answer = await self._generate_prompt_response(context, message, language)
         context['chat_history'].append({"role": "assistant", "content": answer})
@@ -138,7 +207,37 @@ class ChatbotService:
             "is_complete": False,
             "chat_history": context['chat_history']
         }
+    async def _handle_contact_completion(self, context, session_id, language) -> Dict:
+        context['contact_complete'] = True
+        completion_message = (
+            "Thank you! Your contact information has been saved. Feel free to ask any questions about the solar system analysis."
+            if language == "en"
+            else "Cảm ơn bạn! Thông tin liên lạc đã được lưu. Bạn có thể tiếp tục đặt câu hỏi về phân tích hệ thống điện mặt trời."
+        )
+        context['chat_history'].append({"role": "assistant", "content": completion_message})
+        await self._save_context(session_id, context)
+        
+        # Set count_analysis to 11
+        
+        return {
+            "message": completion_message,
+            "contact_complete": False,
+            "chat_history": context['chat_history']
+        }
 
+    async def _process_current_contact_question(self, context, parameter, message, session_id, language) -> Dict:
+      
+        context[parameter] = message
+        context['chat_history'].append({"role": "assistant", "content": f"Received {parameter}. Thank you!"})
+        await self._save_context(session_id, context)
+
+        parameter = self._get_next_empty_contact_parameter(context)
+        if not parameter:
+            return await self._handle_contact_completion(context, session_id, language)
+        context['current_question'] = parameter
+
+        return await self._ask_next__contact_question(context, parameter, session_id, language)
+    
     async def _process_current_question(self, context, parameter, message, session_id, language) -> Dict:
         valid, value = self._validate_parameter(parameter, message)
         if valid:
@@ -162,7 +261,17 @@ class ChatbotService:
             }
 
         return await self._ask_next_question(context, parameter, session_id, language)
-
+    
+    async def _ask_next__contact_question(self, context, parameter, session_id, language) -> Dict:
+        context['current_question'] = parameter
+        question = self.contact_questions_vi[parameter] if language == "vi" else self.contact_questions_en[parameter]
+        context['chat_history'].append({"role": "assistant", "content": question})
+        await self._save_context(session_id, context)
+        return {
+            "message": question,
+            "is_complete": False,
+            "chat_history": context['chat_history']
+        }
     async def _ask_next_question(self, context, parameter, session_id, language) -> Dict:
         context['current_question'] = parameter
         question = self.questions_vi[parameter] if language == "vi" else self.questions_en[parameter]
@@ -214,7 +323,12 @@ class ChatbotService:
             if context.get(param) is None:
                 return param
         return None
-
+    def _get_next_empty_contact_parameter(self, context: Dict) -> Optional[str]:
+        contact_parameters = ["name", "phone_number", "address"]
+        for param in contact_parameters:
+            if not context.get(param):
+                return param
+        return None
     def _validate_parameter(self, parameter: str, value: str) -> Tuple[bool, Optional[float]]:
         """Validate user input for a parameter"""
         try:
