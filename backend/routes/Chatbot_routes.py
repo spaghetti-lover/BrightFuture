@@ -38,3 +38,4 @@ async def chat(request: ChatRequest):
             status_code=500,
             detail=f"Error processing chat: {str(e)}"
         )
+    

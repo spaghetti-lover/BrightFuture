@@ -37,6 +37,9 @@ class ChatbotService:
         # Configure Redis for session storage
         self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
         
+        self.intro_question_vi = "Chào bạn! Bạn có cần tôi tư vấn về năng lượng điện mặt trời không?"
+        self.intro_question_en = "Hello! Do you need consultation on solar energy?"
+
         # Define question flow
         self.questions_vi = {
             "capacity": "Công suất dự kiến của hệ thống điện mặt trời là bao nhiêu kWp?",
@@ -60,64 +63,158 @@ class ChatbotService:
             "performance_ratio": "What is the expected performance ratio? (Usually 0.7 to 0.8)"
         }
 
-    
     async def process_message(self, message: str, session_id: str, language: str = "vi") -> Dict:
-        print(f"Processing message: {message} for session: {session_id}")
+            print(f"Processing message: {message} for session: {session_id}")
+            context = self._get_context(session_id)
 
-        context = self._get_context(session_id)
-        print(f"Current context: {context}")
+            # Step 1: Check if the user has been greeted
+            if not context.get("greeted"):
+                return await self._handle_greeting(context, session_id, language)
 
+            # Step 2: Check for user confirmation
+            if not context.get("confirmed"):
+                return await self._handle_confirmation(message, context, session_id, language)
+
+            # Step 3: Handle conversation flow
+            return await self._handle_conversation_flow(message, context, session_id, language)
+
+    async def _handle_greeting(self, context, session_id, language) -> Dict:
+        context["greeted"] = True
+        greeting = self.intro_question_vi if language == "vi" else self.intro_question_en
+        context['chat_history'].append({"role": "assistant", "content": greeting})
+        await self._save_context(session_id, context)
+        return {
+            "message": greeting,
+            "is_complete": False,
+            "chat_history": context['chat_history']
+        }
+
+    async def _handle_confirmation(self, message, context, session_id, language) -> Dict:
+        if message.lower() in ["yes", "có", "ok", "đồng ý"]:  # Add other variations if needed
+            context["confirmed"] = True
+            guidance_message = (
+                "Cảm ơn bạn đã đồng ý. Để bắt đầu tư vấn, vui lòng cung cấp các thông tin về hệ thống điện mặt trời của bạn."
+                "\nChúng tôi sẽ hỏi bạn về công suất, vị trí lắp đặt, góc nghiêng, và các thông số khác."
+            ) if language == "vi" else (
+                "Thank you for confirming! To begin the consultation, please provide details about your solar power system."
+                "\nWe will ask for information about the system capacity, installation location, tilt angle, and other parameters."
+            )
+            context['chat_history'].append({"role": "assistant", "content": guidance_message})
+            await self._save_context(session_id, context)
+            return {
+                "message": guidance_message,
+                "is_complete": False,
+                "chat_history": context['chat_history']
+            }
+        else:
+            response = "Xin lỗi, tôi chưa thể giúp bạn với yêu cầu này." if language == "vi" else "Sorry, I can't assist with that request."
+            return {
+                "message": response,
+                "is_complete": True,
+                "chat_history": context['chat_history']
+            }
+
+    async def _handle_conversation_flow(self, message, context, session_id, language) -> Dict:
         context['chat_history'].append({"role": "user", "content": message})
-        
-        if context['is_complete']:
-            return await self._generate_analysis(context, language)
+        if context.get('is_complete'):
+            return await self._generate_completion_response(context, message, session_id, language)
 
-        #context['current_question'] is content of the current question  
-        #context['current_question'] = None if the current question is not answered yet
-        parameter = context['current_question'] or self._get_next_empty_parameter(context)
-        print(context['current_question'])
-        
+        parameter = context.get('current_question') or self._get_next_empty_parameter(context)
         if not parameter:
-            context['is_complete'] = True
-            return await self._generate_analysis(context, language)
-        print(context["current_question"])
+            return await self._handle_completion(context, session_id, language)
 
-        if context['current_question']:
-            valid, value = self._validate_parameter(parameter, message)
-            print(f"Validation result: valid={valid}, value={value}")
+        if context.get('current_question'):
+            return await self._process_current_question(context, parameter, message, session_id, language)
+        print(f"Next parameter in next question: {parameter}")
+        return await self._ask_next_question(context, parameter, session_id, language)
+
+    async def _generate_completion_response(self, context, message, session_id, language) -> Dict:
+        answer = await self._generate_prompt_response(context, message, language)
+        context['chat_history'].append({"role": "assistant", "content": answer})
+        await self._save_context(session_id, context)
+        return {
+            "message": answer,
+            "is_complete": False,
+            "chat_history": context['chat_history']
+        }
+
+    async def _handle_completion(self, context, session_id, language) -> Dict:
+        context['is_complete'] = True
+        completion_message = "Cảm ơn bạn! Tất cả thông tin đã được thu thập. Bạn có thể hỏi tôi bất kỳ điều gì về hệ thống của mình."
+        context['chat_history'].append({"role": "assistant", "content": completion_message})
+        await self._save_context(session_id, context)
+        return {
+            "message": completion_message,
+            "is_complete": False,
+            "chat_history": context['chat_history']
+        }
+
+    async def _process_current_question(self, context, parameter, message, session_id, language) -> Dict:
+        valid, value = self._validate_parameter(parameter, message)
+        if valid:
+            context[parameter] = value
+            context['chat_history'].append({"role": "assistant", "content": f"Received {parameter}. Thank you!"})
+            await self._save_context(session_id, context)
+
+            parameter = self._get_next_empty_parameter(context)
+            if not parameter:
+                return await self._handle_completion(context, session_id, language)
+
+            context['current_question'] = parameter
+        else:
+            response = self._get_validation_error_message(parameter, language)
+            context['chat_history'].append({"role": "assistant", "content": response})
+            await self._save_context(session_id, context)
+            return {
+                "message": response,
+                "is_complete": False,
+                "chat_history": context['chat_history']
+            }
+
+        # Ask the next question if parameter is valid
+        return await self._ask_next_question(context, parameter, session_id, language)
 
 
-            if valid:
-                context[parameter] = value
-                parameter = self._get_next_empty_parameter(context)
-                if not parameter:
-                    context['is_complete'] = True
-                    await self._save_context(session_id, context)
-                    return await self._generate_analysis(context, language)
-            else:
-                # Invalid input, ask again
-                print(f"Invalid input for parameter: {parameter}")
-                response = self._get_validation_error_message(parameter, language)
-                context['chat_history'].append({"role": "assistant", "content": response})
-                await self._save_context(session_id, context)
-                return {
-                    "message": response,
-                    "is_complete": False,
-                    "chat_history": context['chat_history']
-                }
-
-        # Ask the next question
+    async def _ask_next_question(self, context, parameter, session_id, language) -> Dict:
         context['current_question'] = parameter
-        print("current_question" + context["current_question"])
         question = self.questions_vi[parameter] if language == "vi" else self.questions_en[parameter]
         context['chat_history'].append({"role": "assistant", "content": question})
         await self._save_context(session_id, context)
-        
         return {
             "message": question,
             "is_complete": False,
             "chat_history": context['chat_history']
         }
+
+
+
+    async def _generate_prompt_response(self, context, message, language):
+        # Collect solar system information from context
+        collected_data = "\n".join([f"{k}: {v}" for k, v in context.items() if k in self.questions_vi.keys()])
+        
+        # Obtain statistics and create a prompt for analysis
+        stats = await self.get_statistics(context)
+        stats_summary = self._create_analysis_prompt(stats, language)
+        
+        # Combine both the system information and statistics into a single prompt
+        prompt = (
+            f"Dưới đây là các thông tin về hệ thống điện mặt trời của người dùng:\n{collected_data}\n"
+            f"Các thống kê liên quan:\n{stats_summary}\n"
+            f"Dựa vào các thông tin này, hãy trả lời câu hỏi: {message}"
+        ) if language == "vi" else (
+            f"Here is the information about the user's solar power system:\n{collected_data}\n"
+            f"Related statistics:\n{stats_summary}\n"
+            f"Based on this information, please answer the question: {message}"
+        )
+        
+        # Generate response using the prompt
+        response = model.generate_content(prompt)
+        # Extract the text content from the response object
+        response_text = response.text  # assuming the content is stored in `text`
+        return response_text
+
+
+
 
     def _get_context(self, session_id: str) -> Dict:
         """Get or initialize user context from Redis"""
@@ -193,24 +290,6 @@ class ChatbotService:
         
         return messages.get(parameter, "Invalid input, please try again.")
 
-    async def _generate_analysis(self, context: Dict, language: str) -> Dict:
-        """Generate final analysis using collected parameters"""
-        stats = await self.get_statistics(context)
-        prompt = self._create_analysis_prompt(stats, language)
-        response = self.model.generate_content(prompt)
-        
-        analysis_response = {
-            "timestamp": datetime.now().isoformat(),
-            "message": response.text,
-            "system_stats": stats,
-            "is_complete": True,
-            "chat_history": context['chat_history']
-        }
-        
-        # Add the final analysis to chat history
-        context['chat_history'].append({"role": "assistant", "content": response.text})
-        
-        return analysis_response
 
     async def get_statistics(self, context: Dict) -> Dict:
         capacity = context['capacity']
@@ -227,35 +306,78 @@ class ChatbotService:
             capacity, latitude, longitude, timezone, model, surface_tilt, surface_azimuth, performance_ratio
         )
 
-    def _create_analysis_prompt(self, stats: Dict, language: str) -> str:
-        """Create analysis prompt using the collected statistics"""
+    def _create_analysis_prompt(self, stats: dict, language: str) -> str:
+        """
+        Create analysis prompt using the collected statistics.
+        
+        Parameters:
+        stats (dict): A dictionary containing the system statistics.
+        language (str): The target language for the analysis prompt ('vi' for Vietnamese, 'en' for English).
+        
+        Returns:
+        str: The generated analysis prompt.
+        """
         if language == "vi":
-            # Create Vietnamese prompt
+            # Tạo lời phân tích bằng tiếng Việt
             prompt = f"""
-            Dựa trên các thông số được cung cấp, hệ thống điện mặt trời của bạn có:
-            - Công suất: {stats['capacity']} kW
-            - Vị trí: Vĩ độ {stats['latitude']}, Kinh độ {stats['longitude']}
-            - Múi giờ: {stats['timezone']}
-            - Loại tấm pin: {stats['model']}
-            - Góc nghiêng tấm pin: {stats['surface_tilt']} độ
-            - Góc phương vị tấm pin: {stats['surface_azimuth']} độ
-            - Hệ số hiệu suất: {stats['performance_ratio'] * 100:.2f}%
+               Dựa trên các thông số được cung cấp, hệ thống điện mặt trời của bạn có:
 
-            Với các thông số này, hệ thống của bạn dự kiến sẽ sản xuất được {stats['total_energy']} kWh điện mỗi năm, góp phần giảm {stats['co2_savings']} tấn khí thải CO2.
+            Thông số hiệu suất:
+            - Công suất tối đa hàng ngày: {stats['max_daily_gii']} kW
+            - Công suất tối thiểu hàng ngày: {stats['min_daily_gii']} kW
+            - Tổng công suất tạo ra trong năm: {stats['yearly_total_gii']} kW
+            - Công suất trung bình hàng ngày: {stats['average_daily_gii']} kW
+
+            Thông số năng lượng:
+            - Năng lượng tối đa hàng ngày: {stats['max_daily_energy']} kWh
+            - Năng lượng tối thiểu hàng ngày: {stats['min_daily_energy']} kWh
+            - Tổng năng lượng tạo ra trong năm: {stats['yearly_total_energy']} kWh
+            - Năng lượng trung bình hàng ngày: {stats['average_daily_energy']} kWh
+                Dưới đây là các thông số sản lượng điện chi tiết theo ngày:
+
+            {self._format_daily_data(stats['daily_values'])}
+            
+            Và dưới đây là các thông số sản lượng điện theo tháng:
+            {self._format_monthly_data(stats['monthly_values'])}
             """
         else:
-            # Create English prompt
+            # Tạo lời phân tích bằng tiếng Anh
             prompt = f"""
             Based on the provided parameters, your solar system has:
-            - Capacity: {stats['capacity']} kW
-            - Location: Latitude {stats['latitude']}, Longitude {stats['longitude']}
-            - Timezone: {stats['timezone']} 
-            - Panel model: {stats['model']}
-            - Panel tilt angle: {stats['surface_tilt']} degrees
-            - Panel azimuth angle: {stats['surface_azimuth']} degrees
-            - Performance ratio: {stats['performance_ratio'] * 100:.2f}%
 
-            With these specifications, your system is expected to generate {stats['total_energy']} kWh of electricity annually, contributing to a reduction of {stats['co2_savings']} tons of CO2 emissions.
+            Performance Specifications:
+            - Maximum daily power: {stats['max_daily_gii']} kW
+            - Minimum daily power: {stats['min_daily_gii']} kW
+            - Total yearly power generation: {stats['yearly_total_gii']} kW
+            - Average daily power: {stats['average_daily_gii']} kW
+
+            Energy Specifications:
+            - Maximum daily energy: {stats['max_daily_energy']} kWh
+            - Minimum daily energy: {stats['min_daily_energy']} kWh
+            - Total yearly energy generation: {stats['yearly_total_energy']} kWh
+            - Average daily energy: {stats['average_daily_energy']} kWh
+
+            Here are the detailed daily energy production statistics:
+            {self._format_daily_data(stats['daily_values'])}
+            
+            And here are the monthly energy production statistics:
+            {self._format_monthly_data(stats['monthly_values'])}
             """
-
+        
         return prompt
+
+    def _format_daily_data(self, daily_values: list) -> str:
+        """Format daily energy production data as a table."""
+        table = "| Date | GII (kWh/m²) | Energy (kWh) |\n"
+        table += "|------|-------------|-------------|\n"
+        for row in daily_values:
+            table += f"| {row['date']} | {row['gii']:.2f} | {row['energy']:.2f} |\n"
+        return table
+
+    def _format_monthly_data(self, monthly_values: list) -> str:
+        """Format monthly energy production data as a table."""
+        table = "| Month | GII (kWh/m²) | Energy (kWh) |\n"
+        table += "|-------|-------------|-------------|\n"
+        for row in monthly_values:
+            table += f"| {row['month']} | {row['gii']:.2f} | {row['energy']:.2f} |\n"
+        return table

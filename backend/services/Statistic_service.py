@@ -39,7 +39,7 @@ async def get_statistics(capacity: float, latitude: float, longitude: float, tim
     def calculate_solar_radiation() -> Tuple[pd.Series, pd.Series, float, pd.DataFrame]:
         """Calculate solar radiation using pvlib"""
         site = location.Location(latitude, longitude, timezone)
-        times = pd.date_range(start='2024-01-01', end='2025-01-01', freq='h', tz=timezone)
+        times = pd.date_range(start='2024-01-01', end='2025-01-01', freq='H', tz=timezone)
         times = times[:-1]
         
         solar_position = site.get_solarposition(times)
