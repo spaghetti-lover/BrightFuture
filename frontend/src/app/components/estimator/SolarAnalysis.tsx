@@ -1,21 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { DailyData } from "@/app/interfaces/form/SolarAnalysisInterface";
 import { SolarAnalysisInterface } from "@/app/interfaces/form/SolarAnalysisInterface";
 import { calculateSolarPowerHour } from "@/app/helpers/calculateSolarPower";
 
 const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
+  const searchParams = useSearchParams();
   const [inputType, setInputType] = useState("address");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState<string | null>(null);
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [showAnalysis, setShowAnalysis] = useState(true);
   let usableSunlightHoursPerYear = 0;
 
-  // if (data) {
-  //   const dailyData: DailyData[] = data.daily_values;
-  //   usableSunlightHoursPerYear = calculateSolarPowerHour(dailyData);
-  // }
+  useEffect(() => {
+    const queryAddress = searchParams.get("address");
+    if (queryAddress) {
+      setAddress(queryAddress);
+    }
+  }, [searchParams]);
+
+  const getIframeSrc = (address: string | null) => {
+    if (address == "65 P. Trần Quang Diệu") {
+      return "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d421.71951406013903!2d105.82403442187301!3d21.014882127496016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab7eba2c62cd%3A0xddde897cad482f64!2zNjUgUC4gVHLhuqduIFF1YW5nIERp4buHdSwgQ2jhu6MgROG7q2EsIMSQ4buRbmcgxJBhLCBIw6AgTuG7mWksIFZpZXRuYW0!5e1!3m2!1sen!2s!4v1731631395733!5m2!1sen!2s";
+    } else if (address == "Trường THCS Ngoại ngữ - ĐH Ngoại ngữ - ĐHQGHN") {
+      return "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2836.5132863077656!2d105.78063707379754!3d21.039373987416766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab357b4b8033%3A0x6ab46232de0e03c!2zVHLGsOG7nW5nIFRIQ1MgTmdv4bqhaSBuZ-G7ryAtIMSQSCBOZ2_huqFpIG5n4buvIC0gxJBIUUdITg!5e1!3m2!1sen!2s!4v1731631465941!5m2!1sen!2s";
+    }
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -36,34 +48,30 @@ const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
     }
     setShowAnalysis(true);
   };
-  console.log(
-    `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d298.1834136886554
-    !2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1
-    !3m3!1m2!1s0x3135ab70b95c36c5%3A0x6cc1da673ea579d3!!5e1!3m2!1sen!2s
-    !4v1731539928843!5m2!1sen!2s`
-  );
+
   return (
     <div className="relative w-full bg-gray-200">
-      {/* <div className="h-[600px] w-full bg-gray-400 bg-[url('/images/solar.png')] bg-cover"></div> */}
-      <iframe
-        // src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d298.1834136886554!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab70b95c36c5%3A0x6cc1da673ea579d3!2sHanoi%20University%20Of%20Culture!5e1!3m2!1sen!2s!4v1731539928843!5m2!1sen!2s`}
-        src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2836.5348155533816!2d105.7801040737975!3d21.038243387455555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab354920c233%3A0x5d0313a3bfdc4f37!2sVNU%20University%20of%20Engineering%20and%20Technology!5e1!3m2!1sen!2s!4v1731599998757!5m2!1sen!2s`}
-        width="100%"
-        height="600"
-        style={{ border: 0 }}
-        allowFullScreen={true}
-        loading="lazy"
-      ></iframe>
-
-      {/* <div className="absolute top-4 right-4 bg-white p-2 rounded-sm cursor-pointer z-50">
-        <Maximize size={24} />
-      </div> */}
+      {address ? (
+        <iframe
+          src={getIframeSrc(address)}
+          width="100%"
+          height="600"
+          style={{ border: 0 }}
+          allowFullScreen={true}
+          loading="lazy"
+        ></iframe>
+      ) : (
+        <p className="text-red-500">Không có địa chỉ hợp lệ trong URL.</p>
+      )}
 
       {/* Analysis overlay */}
       <div className="absolute py-[40px] top-2 left-3 bg-white rounded-lg shadow-lg p-4 w-150 z-50">
         {showAnalysis && (
           <>
             <div className="mb-4">
+              <div className="text-lg font-semibold mb-2">
+                Địa điểm: <span className="">{address}</span>
+              </div>
               <div className="flex items-center text-green-600 mb-2">
                 <svg
                   className="w-5 h-5 mr-2"
@@ -127,18 +135,6 @@ const SolarAnalysis = ({ data }: { data: SolarAnalysisInterface }) => {
           </>
         )}
       </div>
-
-      {/* Heatmap legend */}
-      {/* <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow p-2 flex items-center z-50">
-        <span className="mr-2">Shady</span>
-        <div className="w-32 h-4 bg-gradient-to-r from-purple-500 via-orange-500 to-yellow-300 rounded"></div>
-        <span className="ml-2">Sunny</span>
-      </div> */}
-
-      {/* Map attribution */}
-      {/* <div className="absolute bottom-1 left-1 text-xs text-gray-600 z-50">
-        Keyboard shortcuts | Map data ©2024 Google | Terms
-      </div> */}
     </div>
   );
 };

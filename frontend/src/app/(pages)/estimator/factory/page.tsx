@@ -70,7 +70,7 @@ const Factory = () => {
         <div className="relative h-96">
           <img
             src="/images/CMX.jpg"
-            alt="Nhà máy điện mặt trời CMX Solar"
+            alt="DKA Solar Centre"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/30" />
@@ -78,7 +78,7 @@ const Factory = () => {
             <div className="flex items-center gap-3">
               <Sun className="h-8 w-8 text-yellow-400" />
               <h1 className="text-3xl font-bold text-white">
-                Nhà Máy Điện Mặt Trời CMX Solar
+                DKA Solar Centre
               </h1>
             </div>
           </div>
@@ -93,17 +93,18 @@ const Factory = () => {
 
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
               <p className="text-blue-700">
-                Dự án hợp tác nghiên cứu với CMX Solar (CMX-2024-RS01) nhằm tối
-                ưu hóa hiệu suất và dự báo sản lượng điện của nhà máy điện mặt
-                trời lớn nhất khu vực Đông Nam Á.
+                Dự án hợp tác nghiên cứu với trung tâm năng lượng DKA
+                (DKA-2024-RS01) nhằm tối ưu hóa hiệu suất và dự báo sản lượng
+                điện của một trong các nhà máy điện mặt trời lớn nhất khu vực
+                châu Á.
               </p>
             </div>
 
             <div className="space-y-4 text-gray-600">
               <p>
-                Thông qua việc sử dụng bộ dữ liệu độc quyền từ CMX Solar (CMX
-                Dataset 2024, doi: 10.1234/cmx.2024.01), chúng tôi phát triển
-                các mô hình dự báo tiên tiến để:
+                Thông qua việc sử dụng bộ dữ liệu độc quyền từ DKA (DKA Dataset
+                2024, doi: 10.1234/cmx.2024.01), chúng tôi phát triển các mô
+                hình dự báo tiên tiến để:
               </p>
 
               <ul className="list-disc pl-6 space-y-2">

@@ -20,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <Header />
-        <div className="mt-[60px]">{children}</div>
-        <Footer />
-        <ChatBot />
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <div className="mt-[60px]">{children}</div>
+          <Footer />
+          <ChatBot />
+        </div>
       </body>
     </html>
   );
