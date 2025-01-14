@@ -1,5 +1,11 @@
 # Bright Future: Solar Energy Forecasting Solution
 
+## Team Members
+- **Lê Minh Quý**: Project Manager
+- Phùng Đức Anh
+- Nguyễn Viết Hoàng
+- Bùi Thị Ngọc Ánh
+
 ## Overview
 The **Bright Future** project aims to address key environmental and operational challenges associated with solar energy adoption and production. Our solution is a data-driven approach to forecast solar energy output and provide actionable insights for households, businesses, and power plant operators.
 
@@ -42,8 +48,3 @@ The Bright Future platform leverages machine learning and advanced analytics to 
 - **Cloud Services:** Vercel for frontend deployment, AWS/GCP for backend scalability
 - **Shell Scripts:** Utility scripts for project setup and maintenance
 
-## Team Members
-- **Lê Minh Quý**: Project Manager
-- Phùng Đức Anh
-- Nguyễn Viết Hoàng
-- Bùi Thị Ngọc Ánh
