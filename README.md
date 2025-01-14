@@ -1,7 +1,7 @@
 # Bright Future: Solar Energy Forecasting Solution
 
 ## Team Members
-- **Lê Minh Quý**: Project Manager
+- **Lê Minh Quý**: Lead Engineering
 - Phùng Đức Anh
 - Nguyễn Viết Hoàng
 - Bùi Thị Ngọc Ánh
