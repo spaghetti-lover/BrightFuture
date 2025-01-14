@@ -41,3 +41,9 @@ The Bright Future platform leverages machine learning and advanced analytics to 
 - **Database:** PostgreSQL
 - **Cloud Services:** Vercel for frontend deployment, AWS/GCP for backend scalability
 - **Shell Scripts:** Utility scripts for project setup and maintenance
+
+## Team Members
+- **Lê Minh Quý**: Project Manager
+- Phùng Đức Anh
+- Nguyễn Viết Hoàng
+- Bùi Thị Ngọc Ánh
